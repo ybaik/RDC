@@ -5,32 +5,17 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
-class MarkerInfo
+
+struct MarkerInfo
 {
-public:
+	MarkerInfo() {
+		vertices.resize(4);
+	}
 
-	MarkerInfo() 
-	{
-		reset();
-	};
-	virtual ~MarkerInfo() {};
-
-	cv::Point2f center; // a center point of the marker
-	int area; // number of points in marker plane (on half size of image)
-
-	std::vector<cv::Point2f> arrPt; // corner points of the marker
-	
-	void reset()
-	{
-		center = cv::Point2f(0, 0);
-		area =  0;
-		arrPt.resize(4);
-
-		for (int i=0 ; i < 4 ; i++)
-		{
-			arrPt.at(i) = cv::Point2f(-1, -1);
-		}
-	};
+	std::vector<cv::Point2f> vertices; // boundary 4 vertices
+	cv::Point2f center; // a marker center point
+	int area; // marker area
+	float weight;
 };
 
 class AutoLabeling  
@@ -84,6 +69,7 @@ protected:
 
 	// #6 Do auto-labeling
 	void doAutoLabeling(
+		const cv::Mat& cimg,
 		const std::vector<cv::Point2f>& basis,
 		const std::vector<cv::Point2f>& corners,
 		std::vector<cv::Point2f>& arrLabeledPoint);

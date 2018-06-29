@@ -37,7 +37,7 @@ void System::correct(const cv::Mat& img)
 	int nGrid = 24;
 	AutoLabeling Labeling(_nLattice);
 	std::vector<cv::Point2f> corners_labeled;
-	Labeling.autoLabeling(gimg, cimg, corners, corners_labeled, nGrid );
+	Labeling.autoLabeling(gimg, cimg, corners, corners_labeled, nGrid);
 
 
 }

@@ -39,28 +39,28 @@ void AutoLabeling::findMarkers(const cv::Mat& gimg, std::vector<MarkerInfo>& mar
 	std::map<int, int> boundary_labels;
 	int cols = gimg.cols;
 	int rows = gimg.rows;
-	for (int x = 0; x < cols; x++)
-	{
+	for (int x = 0; x < cols; x++) {
 		int label;
 		label = labelImage.at<int>(0, x);
 		boundary_labels[label] = 1;
 
-		label = labelImage.at<int>(rows-1, x);
+		label = labelImage.at<int>(rows - 1, x);
 		boundary_labels[label] = 1;
 	}
 
-	for (int y = 0; y < rows; y++)
-	{
+	for (int y = 0; y < rows; y++) {
 		int label;
 		label = labelImage.at<int>(y, 0);
 		boundary_labels[label] = 1;
 
-		label = labelImage.at<int>(y, cols-1);
+		label = labelImage.at<int>(y, cols - 1);
 		boundary_labels[label] = 1;
 	}
 
 	// find largest 3 blobs
 	// label zero is background
+
+	cv::Point2f img_center = cv::Point2f((float)cols/2, (float)rows/2);
 	for (int label_id = 0; label_id < nLabels; label_id++)
 	{
 		if (boundary_labels.count(label_id)) 
@@ -73,24 +73,30 @@ void AutoLabeling::findMarkers(const cv::Mat& gimg, std::vector<MarkerInfo>& mar
 		float y = (float)centroids.at<double>(label_id, 1);
 		cv::Point2f center = cv::Point2f(x, y);
 
-		if (area >= markerInfo[0].area)
+		float dist = cv::norm(center - img_center);
+		float weight = area * (rows - dist) / rows;
+
+		if (weight >= markerInfo[0].weight)
 		{
 			markerInfo[2] = markerInfo[1];
 			markerInfo[1] = markerInfo[0];
 
 			markerInfo[0].area = area;
+			markerInfo[0].weight = weight;
 			markerInfo[0].center = center;
 		}
-		else if (area >= markerInfo[1].area)
+		else if (weight >= markerInfo[1].weight)
 		{
 			markerInfo[2] = markerInfo[1];
 
 			markerInfo[1].area = area;
+			markerInfo[1].weight = weight;
 			markerInfo[1].center = center;
 		}
-		else if (area >= markerInfo[2].area)
+		else if (weight >= markerInfo[2].weight)
 		{
 			markerInfo[2].area = area;
+			markerInfo[2].weight = weight;
 			markerInfo[2].center = center;
 		}
 	}
@@ -193,10 +199,10 @@ void AutoLabeling::findMarkCorners(
 		// sorting
 		if     (dist <= minDis1)
 		{
-			markerInfo.arrPt.at(3) = markerInfo.arrPt[2];
-			markerInfo.arrPt.at(2) = markerInfo.arrPt[1];
-			markerInfo.arrPt.at(1) = markerInfo.arrPt[0];
-			markerInfo.arrPt.at(0) = corners[i];
+			markerInfo.vertices.at(3) = markerInfo.vertices[2];
+			markerInfo.vertices.at(2) = markerInfo.vertices[1];
+			markerInfo.vertices.at(1) = markerInfo.vertices[0];
+			markerInfo.vertices.at(0) = corners[i];
 			minDis4 = minDis3;
 			minDis3 = minDis2;
 			minDis2 = minDis1;
@@ -205,9 +211,9 @@ void AutoLabeling::findMarkCorners(
 		}
 		else if (dist <= minDis2)
 		{
-			markerInfo.arrPt.at(3) = markerInfo.arrPt[2];
-			markerInfo.arrPt.at(2) = markerInfo.arrPt[1];
-			markerInfo.arrPt.at(1) = corners[i];
+			markerInfo.vertices.at(3) = markerInfo.vertices[2];
+			markerInfo.vertices.at(2) = markerInfo.vertices[1];
+			markerInfo.vertices.at(1) = corners[i];
 			minDis4 = minDis3;
 			minDis3 = minDis2;
 			minDis2 = dist;
@@ -215,21 +221,21 @@ void AutoLabeling::findMarkCorners(
 		}
 		else if (dist <= minDis3)
 		{
-			markerInfo.arrPt.at(3) = markerInfo.arrPt[2];
-			markerInfo.arrPt.at(2) = corners[i];
+			markerInfo.vertices.at(3) = markerInfo.vertices[2];
+			markerInfo.vertices.at(2) = corners[i];
 			minDis4 = minDis3;
 			minDis3 = dist;
 		}
 		else if (dist <= minDis4)
 		{
-			markerInfo.arrPt.at(3) = corners[i];
+			markerInfo.vertices.at(3) = corners[i];
 			minDis4 = dist;
 		}
 	}
 
 	// align marker corners
 	std::vector<cv::Point2f> arrPt;
-	arrPt = markerInfo.arrPt;
+	arrPt = markerInfo.vertices;
 
 	if (nIdx == 0) 	// find the mark of plane 1
 	{
@@ -239,13 +245,13 @@ void AutoLabeling::findMarkCorners(
 
 			if (pt.x < center.x)
 			{
-				if (pt.y > center.y) { markerInfo.arrPt.at(0) = pt; }
-				else				 { markerInfo.arrPt.at(1) = pt; }
+				if (pt.y > center.y) { markerInfo.vertices.at(0) = pt; }
+				else				 { markerInfo.vertices.at(1) = pt; }
 			}
 			else
 			{
-				if (pt.y > center.y) { markerInfo.arrPt.at(3) = pt; }
-				else				 { markerInfo.arrPt.at(2) = pt; }
+				if (pt.y > center.y) { markerInfo.vertices.at(3) = pt; }
+				else				 { markerInfo.vertices.at(2) = pt; }
 			}
 		}
 	}
@@ -261,13 +267,13 @@ void AutoLabeling::findMarkCorners(
 
 			if (dy < dx)
 			{
-				if (pt.x > center.x) { markerInfo.arrPt.at(1) = pt; }
-				else				 { markerInfo.arrPt.at(3) = pt; }
+				if (pt.x > center.x) { markerInfo.vertices.at(1) = pt; }
+				else				 { markerInfo.vertices.at(3) = pt; }
 			}
 			else
 			{
-				if (pt.y > center.y) { markerInfo.arrPt.at(2) = pt; }
-				else                 { markerInfo.arrPt.at(0) = pt; }
+				if (pt.y > center.y) { markerInfo.vertices.at(2) = pt; }
+				else                 { markerInfo.vertices.at(0) = pt; }
 			}
 		}
 	}
@@ -280,13 +286,13 @@ void AutoLabeling::findMarkCorners(
 
 			if (pt.x < center.x)
 			{
-				if (pt.y > center.y) { markerInfo.arrPt.at(1) = pt; }
-				else                 { markerInfo.arrPt.at(2) = pt; }
+				if (pt.y > center.y) { markerInfo.vertices.at(1) = pt; }
+				else                 { markerInfo.vertices.at(2) = pt; }
 			}
 			else
 			{
-				if (pt.y > center.y) { markerInfo.arrPt.at(0) = pt; }
-				else                 { markerInfo.arrPt.at(3) = pt; }
+				if (pt.y > center.y) { markerInfo.vertices.at(0) = pt; }
+				else                 { markerInfo.vertices.at(3) = pt; }
 			}
 		}
 	}
@@ -362,14 +368,14 @@ void AutoLabeling::findRigCenterAndLines(
 {
 	// find line between plane 1 and 2
 	// find line 1
-	basis.at(1) = findPointusingLattice(markerInfo[0].arrPt[1], markerInfo[0].arrPt[0], corners, _nLattice);
-	basis.at(0) = findPointusingLattice(markerInfo[0].arrPt[2], markerInfo[0].arrPt[3], corners, _nLattice);
+	basis.at(1) = findPointusingLattice(markerInfo[0].vertices[1], markerInfo[0].vertices[0], corners, _nLattice);
+	basis.at(0) = findPointusingLattice(markerInfo[0].vertices[2], markerInfo[0].vertices[3], corners, _nLattice);
 
 
 	// find line between plane 2 and 3
 	// find line 2
-	basis.at(3) = findPointusingLattice(markerInfo[2].arrPt[3], markerInfo[2].arrPt[0], corners, _nLattice);
-	basis.at(2) = findPointusingLattice(markerInfo[2].arrPt[2], markerInfo[2].arrPt[1], corners, _nLattice);
+	basis.at(3) = findPointusingLattice(markerInfo[2].vertices[3], markerInfo[2].vertices[0], corners, _nLattice);
+	basis.at(2) = findPointusingLattice(markerInfo[2].vertices[2], markerInfo[2].vertices[1], corners, _nLattice);
 
 	cv::Point3f mainL1 = computeLine(basis[0], basis[1]);
 	cv::Point3f mainL2 = computeLine(basis[2], basis[3]);
@@ -377,7 +383,7 @@ void AutoLabeling::findRigCenterAndLines(
 
 	// find line between plane 3 and 1
 	// find line 3
-	basis.at(4) = findPointusingLattice(markerInfo[0].arrPt[2], markerInfo[0].arrPt[1], corners, _nLattice);
+	basis.at(4) = findPointusingLattice(markerInfo[0].vertices[2], markerInfo[0].vertices[1], corners, _nLattice);
 }
 
 void AutoLabeling::inputVirtualCorner(
@@ -386,16 +392,16 @@ void AutoLabeling::inputVirtualCorner(
 {
 	for (int i=0 ; i < 3 ; i++)
 	{
-		cv::Point2f pt1 = (markerInfo[i].arrPt[0]+markerInfo[i].arrPt[1])/2.0f;
-		cv::Point2f pt2 = (markerInfo[i].arrPt[2]+markerInfo[i].arrPt[3])/2.0f;
+		cv::Point2f pt1 = (markerInfo[i].vertices[0]+markerInfo[i].vertices[1])/2.0f;
+		cv::Point2f pt2 = (markerInfo[i].vertices[2]+markerInfo[i].vertices[3])/2.0f;
 
 		corners.push_back(pt1);
 		corners.push_back(pt2);
 
 		cv::Point3f l1 = computeLine(pt1, pt2);
 
-		pt1 = (markerInfo[i].arrPt[1]+markerInfo[i].arrPt[2])/2.0f;
-		pt2 = (markerInfo[i].arrPt[0]+markerInfo[i].arrPt[3])/2.0f;
+		pt1 = (markerInfo[i].vertices[1]+markerInfo[i].vertices[2])/2.0f;
+		pt2 = (markerInfo[i].vertices[0]+markerInfo[i].vertices[3])/2.0f;
 
 		corners.push_back(pt1);
 		corners.push_back(pt2);
@@ -415,14 +421,12 @@ void AutoLabeling::findMainLineCorner(
 	int size2,
 	int nGrid)
 {
-	int nLattice = 14;
-
-	for (int i=1 ; i < nLattice ; i++)
+	for (int i=1 ; i < _nLattice; i++)
 	{
-		int x = (int) floor ( i*pt.x + (nLattice-i)*center.x )/(float)nLattice;
-		int y = (int) floor ( i*pt.y + (nLattice-i)*center.y )/(float)nLattice;
+		int x = (int) floor ( i*pt.x + (_nLattice-i)*center.x )/(float)_nLattice;
+		int y = (int) floor ( i*pt.y + (_nLattice -i)*center.y )/(float)_nLattice;
 
-		cv::Point2f refPt = findClosestPoint( cv::Point2f(x, y), arrCorner, 100);
+		cv::Point2f refPt = findClosestPoint( cv::Point2f(x, y), arrCorner, 10);
 
 		if (cv::norm(refPt - center) > 2.0)
 		{
@@ -457,7 +461,7 @@ void AutoLabeling::findAllCorners(
 	int nGrid)
 {
 	cv::Point2f refPt = arrLabeledPoint[size+1] + (arrLabeledPoint[size+nGrid] - arrLabeledPoint[size]);
-	arrLabeledPoint.at(size+nGrid+1) = findClosestPoint(refPt, arrCorner, 10);
+	arrLabeledPoint.at(size+nGrid+1) = findClosestPoint(refPt, arrCorner, 15);
 
 	// search 2nd axis..
 	for (int i=2 ; i < nGrid ; i++)
@@ -468,7 +472,7 @@ void AutoLabeling::findAllCorners(
 		if (refPt1.x < 0 || refPt2.x < 0) { continue; }
 
 		cv::Point2f targetPt = 2.0f*refPt2-refPt1;
-		refPt = findClosestPoint(targetPt, arrCorner, 10);
+		refPt = findClosestPoint(targetPt, arrCorner, 15);
 	 	arrLabeledPoint.at(size+nGrid*i+1) = refPt;
 	}
 
@@ -484,13 +488,14 @@ void AutoLabeling::findAllCorners(
 			if (refPt1.x < 0 || refPt2.x < 0) { continue; }
 
 			cv::Point2f targetPt = 2.0f*refPt2-refPt1;
-			refPt = findClosestPoint(targetPt, arrCorner, 10);
+			refPt = findClosestPoint(targetPt, arrCorner, 15);
 	 		arrLabeledPoint.at(size+idx+i) = refPt;
 		}
 	}
 }
 
 void AutoLabeling::doAutoLabeling(
+		const cv::Mat& cimg,
 		const std::vector<cv::Point2f>& basis,
 		const std::vector<cv::Point2f>& corners,
 		std::vector<cv::Point2f>& arrLabeledPoint)
@@ -636,7 +641,7 @@ bool AutoLabeling::autoLabeling(
 		char text[255];
 		for (size_t j=0 ; j < 4 ; j++)
 		{
-			cv::Point2f pt = markerInfo[i].arrPt[j];
+			cv::Point2f pt = markerInfo[i].vertices[j];
 
 			cv::circle(canvas, pt, 3, cv::Scalar(0, 0, 255), 2);
 
@@ -685,7 +690,7 @@ bool AutoLabeling::autoLabeling(
 		arrLabeledPoint.at(i) = cv::Point2f(-1,-1);
 	}
 
-	doAutoLabeling(basis, corners, arrLabeledPoint);
+	doAutoLabeling(cimg, basis, corners, arrLabeledPoint);
 
 	
 #ifdef _DEBUG
