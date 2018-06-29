@@ -131,10 +131,15 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\module\AutoLabeling.cpp" />
+    <ClCompile Include="..\..\src\module\CVL\lineError.cpp" />
+    <ClCompile Include="..\..\src\module\CVL\rdclass.cpp" />
     <ClCompile Include="..\..\src\module\system.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\module\AutoLabeling.h" />
+    <ClInclude Include="..\..\src\module\CVL\lineError.h" />
+    <ClInclude Include="..\..\src\module\CVL\parameters.h" />
+    <ClInclude Include="..\..\src\module\CVL\rdclass.h" />
     <ClInclude Include="..\..\src\module\system.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

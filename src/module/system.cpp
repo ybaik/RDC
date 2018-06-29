@@ -12,7 +12,6 @@ System::~System()
 
 void System::correct(const cv::Mat& img)
 {
-
 	int channel = img.channels();
 
 	cv::Mat cimg, gimg;
@@ -39,7 +38,11 @@ void System::correct(const cv::Mat& img)
 	std::vector<cv::Point2f> corners_labeled;
 	Labeling.autoLabeling(gimg, cimg, corners, corners_labeled, nGrid);
 
-
+	// correction
+	cv::Point2f cod;
+	double w;
+	std::vector<cv::Point2f> corners_corrected;
+	correction(cimg, nGrid, corners_labeled, corners_corrected, cod, w, true);
 }
 
 void System::extractCorners(
@@ -67,7 +70,6 @@ void System::extractCorners(
 	{
 		cv::addWeighted(gray, 1.5, gray, -0.5, 0, gray);
 	}
-
 
 	// extract corners
 	std::vector<cv::Point2f> corners;

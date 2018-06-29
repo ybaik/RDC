@@ -16,6 +16,9 @@
     <Filter Include="Source Files\module">
       <UniqueIdentifier>{73f5ef09-3365-4438-ba8a-9bff50ae4ccc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\module\CVL">
+      <UniqueIdentifier>{98f07813-876b-44fa-abae-6f99c1a58c96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
@@ -27,6 +30,12 @@
     <ClCompile Include="..\..\src\module\AutoLabeling.cpp">
       <Filter>Source Files\module</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\module\CVL\rdclass.cpp">
+      <Filter>Source Files\module\CVL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\module\CVL\lineError.cpp">
+      <Filter>Source Files\module\CVL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\module\system.h">
@@ -34,6 +43,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\module\AutoLabeling.h">
       <Filter>Source Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\module\CVL\parameters.h">
+      <Filter>Source Files\module\CVL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\module\CVL\rdclass.h">
+      <Filter>Source Files\module\CVL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\module\CVL\lineError.h">
+      <Filter>Source Files\module\CVL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

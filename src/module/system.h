@@ -4,9 +4,7 @@
 #include "AutoLabeling.h"
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
-
-
-#define DEBUG_DRAW
+#include "CVL/rdclass.h"
 
 class System  
 {
@@ -19,7 +17,7 @@ public:
 	// Extract Corners
  	void extractCorners(
 		const cv::Mat& gimg,
-#ifdef DEBUG_DRAW
+#ifdef _DEBUG
 		const cv::Mat& cimg, 
 #endif
 		std::vector<cv::Point2f>& corners_out,
