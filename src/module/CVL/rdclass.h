@@ -1,7 +1,7 @@
 #include <fstream>
 #include "parameters.h"
 
-#include <opencv2/core.hpp>
+#include <opencv2/opencv.hpp>
 #include <opencv2/highgui.hpp>
 
 typedef std::vector<cv::Point2f> vecPoint2f;
@@ -60,7 +60,7 @@ public:
 	SetofPoints();
 	SetofPoints(const int lineNum, const int pointNum, const vecPoint2f& arrPoint);
 
-	void setTypeLine(int type);
+	void setTypeLine(int type, const cv::Mat& img);
 	void setTypeLine2(int type);
 
 	void sortPoint(int type);
@@ -82,7 +82,7 @@ int sort(double* point, int num);
 double distance(double ax, double ay, double bx, double by);
 
 
-float GetArea(const cv::Point2f& a, const cv::Point2f& b, const cv::Point2f& c, const cv::Point2f& d);
+float GetArea(cv::Point2f a, cv::Point2f b, cv::Point2f c, cv::Point2f d);
 double GetArea(double* point1, double* point2, double* point3, double* point4);
 
 void intersection(StraightLine line1, StraightLine line2, double* point);
@@ -108,14 +108,7 @@ bool isDiagonal(const cv::Point2f& pt1, const cv::Point2f& pt2, const cv::Point2
 
 //functions.h
 float fpDistance(cv::Point2f p1, cv::Point2f p2);
-float ppDistance(cv::Mat p1, cv::Mat p2);
 float lpDistance(const cv::Point3f& l, const cv::Point2f& p);
-void TakeRowsFrom(cv::Mat*mat, cv::Mat temp);
-void TakeColsFrom(cv::Mat*mat, cv::Mat temp, int start);
-cv::Mat nullVecter(cv::Mat mat);
-
-cv::Point2f orthocenter(cv::Point2f* vertex);
-
 
 
 void correction(const cv::Mat& cimg,
@@ -128,28 +121,27 @@ void correction(const cv::Mat& cimg,
 
 cv::Point2f findCenter(const cv::Mat& img, SetofPoints& set);
 void findVanishPoint(const cv::Point2f& center, SetofPoints& set);
-void findVanishPoint2(const cv::Mat& img, const cv::Point2f& center, int * angleIdx, SetofPoints& set);
-void lineForAngle(const cv::Mat img, cv::Point2f center, SetofPoints& set);
-void calcAngl(const cv::Mat img, cv::Point2f center, SetofPoints& set, int* angleIdx, bool COD_pp = true);
+void lineForAngle(const cv::Mat& img, const cv::Point2f& center, SetofPoints& set);
+void calcAngl(const cv::Mat& img, 
+	const cv::Point2f& center, 
+	SetofPoints& set, 
+	int* angleIdx, 
+	bool COD_pp = true);
 
-void reconstructLines(const cv::Mat inputImage, const cv::Point2f& center, const vecPoint2f& arrDisPoint, vecPoint2f& arrCorPoint, SetofPoints& set);
+void reconstructLines(const cv::Mat& img, const cv::Point2f& center, const vecPoint2f& arrDisPoint, vecPoint2f& arrCorPoint, SetofPoints& set);
 
 
 void FOV(const cv::Point2f& center, const vecPoint2f& arrDisPoint, vecPoint2f& arrCorPoint, double& w, int xSize, int ySize);
 
 void ComputeInitArrCorPointWithFOV(const vecPoint2f& arrDisPoint, vecPoint2f& arrCorPoint, double w, cv::Point2f center);
 
-void drawArc(const cv::Mat &canvas, const vecPoint2f &arr, SecondOrderLine arc, CvScalar color, int thickness);
-float distanceFromConic(cv::Point2f pt, SecondOrderLine arc);
-
+void drawArc(const cv::Mat& canvas, const vecPoint2f &arr, SecondOrderLine arc, cv::Scalar color, int thickness);
 
 void loadPointsFromFile(std::ifstream ptFile, vecPoint2f *arrPoint);
 
 float lineErrorMeasure(const vecPoint2f& arrCorPoint, int xSize, int ySize);
 
-void findHoleWith4pt(cv::Point2f pt1, cv::Point2f pt2, cv::Point2f pt3, cv::Point2f pt4, cv::Point2f* center, float* radius);
-
-cv::Mat findHomography(vecPoint2f first, vecPoint2f second);
+//cv::Mat findHomography(vecPoint2f first, vecPoint2f second);
 
 cv::Point2f ptCorrection(cv::Point2f cod, float w, cv::Point2f inputpt);
 

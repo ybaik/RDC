@@ -237,18 +237,18 @@ void correction(const cv::Mat& img,
 
 	if(COD_pp == true) // COD == p.p 
 	{
-		findVanishPoint(img, ptCOD, set);
+		findVanishPoint(ptCOD, set);
 				
 		calcAngl(img, ptCOD, set, angleIdx, COD_pp);
 	}
-	else // COD != p.p
-	{
-		calcAngl(img, ptCOD, set, angleIdx, COD_pp);
-
-		findVanishPoint2(img, ptCOD, angleIdx, set);
-		
-		calcAngl(img, ptCOD, set, angleIdx, true);
-	}
+// 	else // COD != p.p
+// 	{
+// 		calcAngl(img, ptCOD, set, angleIdx, COD_pp);
+// 
+// 		findVanishPoint2(img, ptCOD, angleIdx, set);
+// 
+// 		calcAngl(img, ptCOD, set, angleIdx, true);
+// 	}
 
 	reconstructLines(img, ptCOD, arrDisPoint, arrCorPoint, set);
 
@@ -296,8 +296,8 @@ cv::Point2f findCenter(const cv::Mat& img, SetofPoints& set)
 	{
 		for (lineType=0 ; lineType <= 2 ; lineType++)
 		{
-			// comupte line equation
-			set.setTypeLine(lineType);
+			// compute line equation
+			set.setTypeLine(lineType, img);
 //			set.saveLines("Lines.txt");
 
 			//draw line
@@ -352,11 +352,13 @@ cv::Point2f findCenter(const cv::Mat& img, SetofPoints& set)
 							{
 								if (i == maxR)
 								{
-									canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(255, 0, 0);
+									//canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(255, 0, 0);
+									cv::circle(canvas, cv::Point(y1 + rows, x1 + cols), 1, CV_RGB(255, 0, 0));
 								}
 								else
 								{
-									canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(255, 0, 0);
+									//canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(255, 0, 0);
+									cv::circle(canvas, cv::Point(y1 + rows, x1 + cols), 1, CV_RGB(255, 0, 0));
 								}
 							}
 
@@ -364,11 +366,13 @@ cv::Point2f findCenter(const cv::Mat& img, SetofPoints& set)
 							{
 								if (i == maxR)
 								{
-									canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(255, 0, 0);
+									//canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(255, 0, 0);
+									cv::circle(canvas, cv::Point(y1 + rows, x1 + cols), 1, CV_RGB(255, 0, 0));
 								}
 								else
 								{
-									canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(255, 0, 0);
+									//canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(255, 0, 0);
+									cv::circle(canvas, cv::Point(y1 + rows, x1 + cols), 1, CV_RGB(255, 0, 0));
 								}
 							}
 
@@ -395,11 +399,14 @@ cv::Point2f findCenter(const cv::Mat& img, SetofPoints& set)
 							{
 								if (i == maxR)
 								{
-									canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(255, 0, 0);
+									//canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(255, 0, 0);
+									cv::circle(canvas, cv::Point(y1 + rows, x1 + cols), 1, CV_RGB(255, 0, 0));
+
 								}
 								else
 								{
-									canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(255, 0, 0);
+									//canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(255, 0, 0);
+									cv::circle(canvas, cv::Point(y1 + rows, x1 + cols), 1, CV_RGB(255, 0, 0));
 								}
 							}
 
@@ -407,11 +414,13 @@ cv::Point2f findCenter(const cv::Mat& img, SetofPoints& set)
 							{
 								if (i == maxR)
 								{
-									canvas.at<cv::Scalar>(y1 + rows, x2 + cols) = CV_RGB(255, 0, 0);
+									//canvas.at<cv::Scalar>(y1 + rows, x2 + cols) = CV_RGB(255, 0, 0);
+									cv::circle(canvas, cv::Point(y1 + rows, x2 + cols), 1, CV_RGB(255, 0, 0));
 								}
 								else
 								{
-									canvas.at<cv::Scalar>(y1 + rows, x2 + cols) = CV_RGB(255, 0, 0);
+									//canvas.at<cv::Scalar>(y1 + rows, x2 + cols) = CV_RGB(255, 0, 0);
+									cv::circle(canvas, cv::Point(y1 + rows, x2 + cols), 1, CV_RGB(255, 0, 0));
 								}
 							}
 							x1++;
@@ -434,7 +443,8 @@ cv::Point2f findCenter(const cv::Mat& img, SetofPoints& set)
 
 						if ((y1 > -rows) && (y1 < yend))
 						{
-							canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(color, color, color);
+							//canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(color, color, color);
+							cv::circle(canvas, cv::Point(y1 + rows, x1 + cols), 1, CV_RGB(color, color, color));
 						}
 						y1++;
 						y2++;
@@ -457,9 +467,8 @@ cv::Point2f findCenter(const cv::Mat& img, SetofPoints& set)
 
 						if ((x1 > -cols) && (x1 < xend))
 						{
-							bigger(x1 + nXSize, y1 + nYSize, 1) = color;
-							bigger(x1 + nXSize, y1 + nYSize, 0) = color;
-							bigger(x1 + nXSize, y1 + nYSize, 2) = color;
+							//canvas.at<cv::Scalar>(y1 + rows, x1 + cols) = CV_RGB(color, color, color);
+							cv::circle(canvas, cv::Point(y1 + rows, x1 + cols), 1, CV_RGB(color, color, color));
 						}
 						x1++;
 						x2++;
@@ -468,7 +477,7 @@ cv::Point2f findCenter(const cv::Mat& img, SetofPoints& set)
 			}
 		}
 
-		cv::imshow("finding center", bigger);
+		cv::imshow("finding center", canvas);
 	}
 
 	return ptCenter;
@@ -488,161 +497,57 @@ void findVanishPoint(const cv::Point2f& center, SetofPoints& set)
 	findVP(angle_yz, angle_xz, set.m_vp, center, set.m_msLine);
 }
 
-void findVanishPoint2(const cv::Mat& img, const cv::Point2f& center, int * angleIdx, SetofPoints& set)
-{
-	// TODO: Add your control notification handler code here
-	cv::Mat canvas;
-
-	double tan_v[2];
-	double tan_bar1[LINENUM1], tan_bar2[LINENUM1];
-	
-	//먼저 소실선을 찾는다.
-	//먼저 오른쪽면에 대해서 계산
-
-	//T'n loading
-	for (int i = 0; i < angleIdx[0]; i++)
-	{
-		tan_bar1[i] = set.m_tangents[0][i];
-	}//tan는 vanishing line에 가까운 순으로 저장되어 있다.
-
-	for (i = 0; i < angleIdx[2]; i++)
-	{
-		tan_bar1[i] = set.m_tangents[2][i];
-	}//tan는 vanishing line에 가까운 순으로 저장되어 있다.
-
-//	tan_v[0] = findTanofV2(tan_bar1,tan_bar2, atan(-1/tan_bar1[LINENUM-1]), atan(tan_bar1[0]) );
-	tan_v[0] = findTanofV(tan_bar1, atan(-1 / tan_bar1[angleIdx[0] - 1]), atan(tan_bar1[0]), angleIdx[0]);
-	//	tan_v[1] = findTanofV(tan_bar2, atan(-1/tan_bar2[LINENUM1-1]), atan(tan_bar2[0]) );
-	tan_v[1] = findTanofV(tan_bar2, atan(tan_bar2[0]), atan(-1 / tan_bar2[angleIdx[2] - 1]), angleIdx[2]);
-
-	//이제 왼쪽면에 대해서 계산
-
-	//T'n loading
-	//소실선을 모두 찾았으면 소실점을 찾는다.
-
-	for (i = 0; i < 3; i++)
-	{
-		set.m_msLine[i].modify(center);
-	}
-
-	//아랫 줄에 있는 vp부터 찾는다.
-	cv::Point3f l1 = cv::Point3f(set.m_msLine[0].coef_x, set.m_msLine[0].coef_y, set.m_msLine[0].cons);
-	//수평으로 지나는 직선
-	cv::Point3f l2 = cv::Point3f(0, -1, center.y + 500);
-	l2.z = 943.282;//디버깅 용
-
-	cv::Point3f x = l1.cross(l2);
-
-	set.m_vp[0].x = x.x / x.z;
-	set.m_vp[0].y = x.y / x.z;
-
-
-	//왼쪽 줄에 있는 vp를 찾는다.
-	l1 = cv::Point3f(set.m_msLine[1].coef_x, set.m_msLine[1].coef_y, set.m_msLine[1].cons);
-
-	//vanishing line
-	StraightLine vLine;
-	vLine.coef_x = -tan_v[0];
-	vLine.coef_y = 1;
-	vLine.cons = 0;
-	cv::Point2f vpdouble;
-	vpdouble.x = set.m_vp[0].x;
-	vpdouble.y = set.m_vp[0].y;
-	vLine.modify(vpdouble);
-
-	l2 = cv::Point3f(vLine.coef_x, vLine.coef_y, vLine.cons);
-	x = l1.cross(l2);
-
-	set.m_vp[1].x = x.x / x.z;
-	set.m_vp[1].y = x.y / x.z;
-
-	//오른쪽 줄에 있는 vp를 찾는다.
-	l1 = cv::Point3f(set.m_msLine[2].coef_x, set.m_msLine[2].coef_y, set.m_msLine[2].cons);
-
-	//vanishing line
-	vLine.coef_x = -tan_v[1];
-	vLine.coef_y = 1;
-	vLine.cons = 0;
-	vLine.modify(vpdouble);
-
-	l2 = cv::Point3f(vLine.coef_x, vLine.coef_y, vLine.cons);
-	x = l1.cross(l2);
-
-	set.m_vp[2].x = x.x / x.z;
-	set.m_vp[2].y = x.y / x.z;
-
-	// p.p. 저장
-	std::ofstream outfile("pp.txt");
-
-	cv::Point2f ppoint;
-	ppoint = orthocenter(set.m_vp);
-
-	outfile << ppoint.x << "\t" << ppoint.y;
-	outfile.close();
-
-	int XSize = img.cols;
-	int YSize = img.rows;
-	if (SHOW_PROC == true)
-	{
-		drawLnVP(center, set.m_msLine, set.m_vp, img, canvas);
-		cv::circle(canvas, ppoint + cv::Point2f(XSize, YSize), 5, CV_RGB(255, 0, 0));
-		cv::imshow("image", canvas);
-	}
-}
-
-void lineForAngle(ByteImage inputImage, cv::Point2f center, SetofPoints& set) 
+void lineForAngle(const cv::Mat& img, const cv::Point2f& center, SetofPoints& set)
 {
 	int lineNum = LINENUM1;
 	int m_lineType2;
-	
+
 
 	int i, x1, y1;
 
-	int xsize=inputImage.GetXSize();
-	int ysize=inputImage.GetYSize();
-	int csize=inputImage.GetCSize();
-
-
+	cv::Mat canvas = img.clone();
+	int cols = img.cols;
+	int rows = img.rows;
+	
 	//라인종류에 따라 순서대로 계산
-	for (m_lineType2=0 ; m_lineType2 <= 2 ; m_lineType2++)
+	for (m_lineType2 = 0; m_lineType2 <= 2; m_lineType2++)
 	{
 		//line의 식 찾기
 		set.setTypeLine2(m_lineType2);
 
 		if (SHOW_PROC == true)
-		{	
+		{
 			//line 그리기
-			
+
 			if (m_lineType2 == 1)
 			{
-				for (i=0 ; i < LINENUM1 ; i++)
+				for (i = 0; i < LINENUM1; i++)
 				{
-					for (x1=0 ; x1 < xsize ; x1++)
+					for (x1 = 0; x1 < cols; x1++)
 					{
-						set.s[m_lineType2][i].getY( x1 , &y1 );
+						set.s[m_lineType2][i].getY(x1, &y1);
 
-						if ( (y1 > 0) && (y1 < ysize) )
+						if ((y1 > 0) && (y1 < rows))
 						{
-							inputImage(x1,y1,1)= 255;
-							inputImage(x1,y1,0)= 0;
-							inputImage(x1,y1,2)= 0;
+							//canvas.at<cv::Scalar>(y1, x1) = CV_RGB(0, 255, 0);
+							cv::circle(canvas, cv::Point(y1, x1), 1, CV_RGB(0, 255, 0));
+
 						}
-					} 
+					}
 				}
 			}
 			else
 			{
-				for (i=0 ; i < LINENUM1 ; i++)
+				for (i = 0; i < LINENUM1; i++)
 				{
-					for (y1=0 ; y1 < ysize ; y1++)
+					for (y1 = 0; y1 < rows; y1++)
 					{
-						set.s[m_lineType2][i].getX( y1 , &x1 );
+						set.s[m_lineType2][i].getX(y1, &x1);
 
-						if( (x1 > 0) && (x1 < xsize) )
+						if ((x1 > 0) && (x1 < cols))
 						{
-							inputImage(x1,y1,0)= 255;
-							inputImage(x1,y1,1)= 0;
-							inputImage(x1,y1,2)= 0;
+							//canvas.at<cv::Scalar>(y1, x1) = CV_RGB(0, 0, 255);
+							cv::circle(canvas, cv::Point(y1, x1), 1, CV_RGB(0, 0, 255));
 						}
 					}
 				}
@@ -653,304 +558,284 @@ void lineForAngle(ByteImage inputImage, cv::Point2f center, SetofPoints& set)
 
 	if (SHOW_PROC == true)
 	{
-		cvCircle(inputImage, center, 2, CV_RGB(255,0,0));
-		ImShow(inputImage, "lines");
+		cv::circle(canvas, center, 2, CV_RGB(255, 0, 0));
+		cv::imshow("lines", canvas);
 	}
 }
 
-void calcAngl(ByteImage inputImage, cv::Point2f center, SetofPoints& set, int * angleIdx, bool COD_pp) 
+void calcAngl(const cv::Mat& img, const cv::Point2f& center, SetofPoints& set, int* angleIdx, bool COD_pp)
 {
-
 	int lineNum = LINENUM1;
-	int m_lineType2 ; 
+	int m_lineType2;
 
+	cv::Mat canvas = img.clone();
 
 	if (SHOW_PROC == true)
 	{
-		//센터를 화면에 표시
-		cvCircle(inputImage, center, 2, CV_RGB(255,0,0));
+		// draw center
+		cv::circle(canvas, center, 2, CV_RGB(255, 0, 0));
 	}
-
-
 
 	cv::Point2f nPoint[3][LINENUM1];
-
-
-	for (m_lineType2=0 ; m_lineType2 <= 2 ; m_lineType2++)
+	for (m_lineType2 = 0; m_lineType2 <= 2; m_lineType2++)
 	{
-		set.findAngle(center,m_lineType2, nPoint[m_lineType2], &angleIdx[m_lineType2], COD_pp);
+		set.findAngle(center, m_lineType2, nPoint[m_lineType2], &angleIdx[m_lineType2], COD_pp);
 	}
 
 	if (SHOW_PROC == true)
 	{
-		// 가장 가까운 점을 화면에 표시
-		for (int j=0 ; j < angleIdx[0] ; j++)
+		// draw nearest points
+		for (int j = 0; j < angleIdx[0]; j++)
 		{
-			cvCircle(inputImage, nPoint[0][j],1, CV_RGB(255,255,255));
+			cv::circle(canvas, nPoint[0][j], 1, CV_RGB(255, 255, 255));
 		}
 
-		for (j=0 ; j < angleIdx[1] ; j++)
+		for (int j = 0; j < angleIdx[1]; j++)
 		{
-			cvCircle(inputImage, nPoint[1][j],1, CV_RGB(255,255,255));
+			cv::circle(canvas, nPoint[1][j], 1, CV_RGB(255, 255, 255));
 		}
-		
-		for (j=0 ; j < angleIdx[2] ; j++)
+
+		for (int j = 0; j < angleIdx[2]; j++)
 		{
-			cvCircle(inputImage, nPoint[2][j],1, CV_RGB(255,255,255));
+			cv::circle(canvas, nPoint[2][j], 1, CV_RGB(255, 255, 255));
 		}
-		
-		ImShow(inputImage, "angle");
+
+		cv::imshow("angle", canvas);
 	}
 }
 
-
-
-void reconstructLines(ByteImage inputImage, const cv::Point2f& center, const vecPoint2f& arrDisPoint, vecPoint2f& arrCorPoint, SetofPoints& set)
+void reconstructLines(const cv::Mat& img, const cv::Point2f& center, const vecPoint2f& arrDisPoint, vecPoint2f& arrCorPoint, SetofPoints& set)
 {
-	int XSize = inputImage.GetXSize();
-	int YSize = inputImage.GetYSize();
-
-	ByteImage bigger;
+	int cols = img.cols;
+	int rows = img.rows;
 
 	int m_centerV = 2;
 	int m_centerH = 4;
 
-
 	int i;
 
-	double tanA,tanT;
+	double tanA, tanT;
 
+	cv::Mat canvas = img.clone();
+	cv::Mat bigger;
 
 	if (SHOW_PROC == true)
 	{
-		//센터를 화면에 표시
-		cvCircle(inputImage, center, 2, CV_RGB(255,0,0));
+		cv::circle(canvas, center, 2, CV_RGB(255, 0, 0));
 	}
 
-
-	for(i =0 ; i <3 ; i++)
+	for (i = 0; i < 3; i++)
 	{
 		set.m_msLine[i].modify(center);
 	}
 
 	//여기 까지는 소실점 보여주는 부분임
 
-	
-
 	//tan a 계산
-	tanA =  (double)(set.m_vp[0].y - set.m_vp[1].y) / (double)( set.m_vp[1].x - set.m_vp[0].x);
+	tanA = (double)(set.m_vp[0].y - set.m_vp[1].y) / (double)(set.m_vp[1].x - set.m_vp[0].x);
 
 
-//	double rect[4][2];
+	//	double rect[4][2];
 	double drect[4][2];
 
 	//스케일링 고정
 	float minDist[4];
 	cv::Point2f  minPt[4];
-	
-	for (i=0 ; i < 4 ; i++)
+
+	for (i = 0; i < 4; i++)
 	{
 		minDist[i] = FLT_MAX;
 	}
 
-	for (i=0 ; i < 3*POINTNUM_SQ ; i++)
+	for (i = 0; i < 3 * POINTNUM_SQ; i++)
 	{
-		fPoint temp = arrDisPoint[i];
-		float dist;
-		dist = fpDistance(temp, center);
+		cv::Point2f pt = arrDisPoint[i];
+		float dist = cv::norm(pt - center);
 
-		if ( dist < minDist[0] )
+		if (dist < minDist[0])
 		{
-			for (int j=3 ; j > 0 ; j--)
+			for (int j = 3; j > 0; j--)
 			{
-				minDist[j] = minDist[j-1];
-				minPt  [j] = minPt  [j-1];
+				minDist[j] = minDist[j - 1];
+				minPt[j] = minPt[j - 1];
 			}
 			minDist[0] = dist;
-			minPt[0] = temp;
+			minPt[0] = pt;
 		}
-		else if ( dist < minDist[1] )
+		else if (dist < minDist[1])
 		{
-			for (int j=3 ; j > 1 ; j--)
+			for (int j = 3; j > 1; j--)
 			{
-				minDist[j] = minDist[j-1];
-				minPt  [j] = minPt  [j-1];
+				minDist[j] = minDist[j - 1];
+				minPt[j] = minPt[j - 1];
 			}
 			minDist[1] = dist;
-			minPt  [1] = temp;
+			minPt[1] = pt;
 		}
-		else if ( dist < minDist[2] )
+		else if (dist < minDist[2])
 		{
-			minDist[3] = minDist[2] ;
-			minPt  [3] = minPt[2];
+			minDist[3] = minDist[2];
+			minPt[3] = minPt[2];
 
 			minDist[2] = dist;
-			minPt  [2] = temp;
+			minPt[2] = pt;
 		}
-		else if ( dist < minDist[3] )
+		else if (dist < minDist[3])
 		{
 			minDist[3] = dist;
-			minPt  [3] = temp;
+			minPt[3] = pt;
 		}
 	}
-	
 
 	float areaOriginal = GetArea(minPt[0], minPt[1], minPt[2], minPt[3]);
 
-
 	if (SHOW_PROC == true)
 	{
-		drawLnVP(center, set.m_msLine, set.m_vp, inputImage, bigger);
-		//점찍기
-		for (i=0 ; i < 4 ; i++)
+		drawLnVP(center, set.m_msLine, set.m_vp, canvas, bigger);
+		for (i = 0; i < 4; i++)
 		{
-			cvCircle(bigger, minPt[i] + cv::Point2f(XSize, YSize) ,2, CV_RGB(200,200,0));
+			cv::circle(bigger, minPt[i] + cv::Point2f(cols, rows), 2, CV_RGB(200, 200, 0));
 		}
 	}
 
-
-
 	//초벌로 ideal 점을 파일에 저장 
-	for (i=0 ; i < 3 ; i++)
+	for (i = 0; i < 3; i++)
 	{
-		set.m_vp[i].x+=XSize;
-		set.m_vp[i].y+=YSize;
+		set.m_vp[i].x += cols;
+		set.m_vp[i].y += rows;
 	}
-	
-	arrCorPoint.RemoveAll();
+
+	arrCorPoint.clear();
 
 	StraightLine lines[2];
-	
-	for (i=0 ; i < POINTNUM ; i++)
+
+	for (i = 0; i < POINTNUM; i++)
 	{
 		//세로줄 구하기
-		tanT = 1/(set.m_factor[0]+i*set.m_offset[0]);
-		tanT = ( tanT+tanA )/ (1 - tanT*tanA);
-		lines[0].set(-tanT,set.m_vp[0]);
-		
-		for (int j=0 ; j < POINTNUM ; j++)
+		tanT = 1 / (set.m_factor[0] + i*set.m_offset[0]);
+		tanT = (tanT + tanA) / (1 - tanT*tanA);
+		lines[0].set(-tanT, set.m_vp[0]);
+
+		for (int j = 0; j < POINTNUM; j++)
 		{
 			//가로줄 구하기
-			tanT = 1/(set.m_factor[1]+j*set.m_offset[1]);
-			tanT = ( tanA - tanT )/ (1 + tanT*tanA);
-			lines[1].set(-tanT,set.m_vp[1]);
-			
+			tanT = 1 / (set.m_factor[1] + j*set.m_offset[1]);
+			tanT = (tanA - tanT) / (1 + tanT*tanA);
+			lines[1].set(-tanT, set.m_vp[1]);
+
 			intersection(lines[0], lines[1], drect[0]);
 
 			cv::Point2f pt;
-			pt.x = drect[0][0] - XSize;
-			pt.y = drect[0][1] - YSize;
+			pt.x = drect[0][0] - cols;
+			pt.y = drect[0][1] - rows;
 
-			arrCorPoint.Add(pt);
+			arrCorPoint.push_back(pt);
 		}
 	}
 
 
 
 	// ideal에서 네 점 찾기 
-	for (i=0 ; i < 3 ; i++)
+	for (i = 0; i < 3; i++)
 	{
-		set.m_vp[i].x-=XSize;
-		set.m_vp[i].y-=YSize;
+		set.m_vp[i].x -= cols;
+		set.m_vp[i].y -= rows;
 	}
 
 	cv::Point2f minPtIdl[4];
 
-	for (i=0 ; i < POINTNUM_SQ ; i++ )
+	for (i = 0; i < POINTNUM_SQ; i++)
 	{
 		cv::Point2f temp = arrDisPoint[i];
 		cv::Point2f tempIdl;
-		
+
 		tempIdl = arrCorPoint[i];
 
-		if ( temp == minPt[0] )
+		if (temp == minPt[0])
 		{
-			minPtIdl[0] = tempIdl ;
+			minPtIdl[0] = tempIdl;
 		}
-		else if ( temp == minPt[1] )
+		else if (temp == minPt[1])
 		{
-			minPtIdl[1] = tempIdl ;
+			minPtIdl[1] = tempIdl;
 		}
-		else if ( temp == minPt[2] )
+		else if (temp == minPt[2])
 		{
-			minPtIdl[2] = tempIdl ;
+			minPtIdl[2] = tempIdl;
 		}
-		else if ( temp == minPt[3] )
+		else if (temp == minPt[3])
 		{
-			minPtIdl[3] = tempIdl ;
+			minPtIdl[3] = tempIdl;
 		}
 	}
-	
+
 	double areaNew = GetArea(minPtIdl[0], minPtIdl[1], minPtIdl[2], minPtIdl[3]);
 	double ratio;
 
-	ratio = sqrt(areaOriginal/areaNew);
-	
-	for (i=0 ; i < 3 ; i ++)
+	ratio = sqrt(areaOriginal / areaNew);
+
+	for (i = 0; i < 3; i++)
 	{
-		set.m_vp[i].x = (set.m_vp[i].x-center.x)*ratio+center.x ;
-		set.m_vp[i].y = (set.m_vp[i].y-center.y)*ratio+center.y ;
+		set.m_vp[i].x = (set.m_vp[i].x - center.x)*ratio + center.x;
+		set.m_vp[i].y = (set.m_vp[i].y - center.y)*ratio + center.y;
 	}
 
 
 	//그림을 그리는 부분
 
-	for (i=0 ; i < 3 ; i++)
+	for (i = 0; i < 3; i++)
 	{
-		set.m_vp[i].x += XSize;
-		set.m_vp[i].y += YSize;
+		set.m_vp[i].x += cols;
+		set.m_vp[i].y += rows;
 	}
 
 
 	//그림을 그리면서 동시에 점을 파일에 저장 
 	//r도 저장
 //	ofstream file_r("e_corr.txt");
-	arrCorPoint.RemoveAll();
+	arrCorPoint.clear();
 
-	
-	for (i=0 ; i < POINTNUM ; i++)
+
+	for (i = 0; i < POINTNUM; i++)
 	{
 		//세로줄 구하기
-		tanT = 1/(set.m_factor[0]+i*set.m_offset[0]);
-		tanT = ( tanT+tanA )/ (1 - tanT*tanA);
-		lines[0].set(-tanT,set.m_vp[0]);
-		drawLine(bigger , lines[0], 0);
+		tanT = 1 / (set.m_factor[0] + i*set.m_offset[0]);
+		tanT = (tanT + tanA) / (1 - tanT*tanA);
+		lines[0].set(-tanT, set.m_vp[0]);
+		drawLine(bigger, lines[0], 0);
 
-		for (int j = 0 ; j < POINTNUM ; j++)
+		for (int j = 0; j < POINTNUM; j++)
 		{
 			//가로줄 구하기
-			tanT = 1/(set.m_factor[1]+j*set.m_offset[1]);
-			tanT = ( tanA - tanT )/ (1 + tanT*tanA);
-			lines[1].set(-tanT,set.m_vp[1]);
-			drawLine(bigger , lines[1], 1);
-			
-			intersection( lines[0], lines[1], drect[0]);
-			
-			cv::Point2f pt(drect[0][0]-XSize, drect[0][1]-YSize);
+			tanT = 1 / (set.m_factor[1] + j*set.m_offset[1]);
+			tanT = (tanA - tanT) / (1 + tanT*tanA);
+			lines[1].set(-tanT, set.m_vp[1]);
+			drawLine(bigger, lines[1], 1);
 
-			arrCorPoint.Add(pt);
-			
+			intersection(lines[0], lines[1], drect[0]);
+
+			cv::Point2f pt(drect[0][0] - cols, drect[0][1] - rows);
+
+			arrCorPoint.push_back(pt);
+
 			//r 계산
 			pt -= center;
-			
+
 			double corr = sqrt(pt.x*pt.x + pt.y*pt.y);
-//			file_r << corr << endl;
+			//			file_r << corr << endl;
 		}
 	}
 
-//	file_r.close();
-	
-// 임시
+	//	file_r.close();
+
+	// 임시
 
 	if (SHOW_PROC == true)
 	{
-		ImShow(bigger, "reconstructed lines");
+		cv::imshow("reconstructed lines", bigger);
 	}
-	
+
 }
-
-
-
 
 void FOV(const cv::Point2f& center, const vecPoint2f& arrDisPoint, vecPoint2f& arrCorPoint, double& w, int xSize, int ySize) 
 {
@@ -964,7 +849,7 @@ void ComputeInitArrCorPointWithFOV(const vecPoint2f& arrDisPoint, vecPoint2f& ar
 
 	double xd, yd, xc, yc;
 	
-	arrCorPoint.RemoveAll();
+	arrCorPoint.clear();
 
 	int size = POINTNUM*POINTNUM*3 ;
 
@@ -996,7 +881,7 @@ void ComputeInitArrCorPointWithFOV(const vecPoint2f& arrDisPoint, vecPoint2f& ar
 			}
 		}
 
-		arrCorPoint.Add(pt);
+		arrCorPoint.push_back(pt);
 	}
 }
 
@@ -1029,49 +914,51 @@ float lineErrorMeasure(const vecPoint2f& arrCorPoint, const int xSize, const int
 
 	float meanError = totalError / (float)count;
 
-	CString line;
-	line.Format("error = %f", meanError ) ;
+	//CString line;
+	//line.Format("error = %f", meanError ) ;
 	//AfxMessageBox(line);
 
 	return meanError;
 }
 
 
-void drawArc(ByteImage &canvas, const vecPoint2f &arr, SecondOrderLine arc, CvScalar color, int thickness)
+void drawArc(const cv::Mat& canvas, 
+	const vecPoint2f &arr, 
+	SecondOrderLine arc, 
+	cv::Scalar color, 
+	int thickness)
 {
 	int x1,x2,y1,y2;
-	int XSize = canvas.GetXSize();
-	int YSize = canvas.GetYSize();
+	int cols = canvas.cols;
+	int rows = canvas.rows;
 	
 	// 가로로 긴건지 세로로 긴건지 판단
-	cv::Point2f temp = arr[arr.GetSize()-1] - arr[0] ;
+	cv::Point2f temp = arr[arr.size()-1] - arr[0];
 
 	int step;
 
 	if(abs(temp.x) - abs(temp.y) > 0)
 	{
 
-		int minY = min( min(arr[0].y, arr[1].y), min(arr[2].y, arr[3].y) ) - YSize/10;
-		int maxY = max( max(arr[0].y, arr[1].y), max(arr[2].y, arr[3].y) ) + YSize/10;
+		int minY = MIN( MIN(arr[0].y, arr[1].y), MIN(arr[2].y, arr[3].y) ) - rows/10;
+		int maxY = MAX( MAX(arr[0].y, arr[1].y), MAX(arr[2].y, arr[3].y) ) + rows/10;
 		if (temp.x > 0) step = 1;
 		else step = -1;
-		for(x1 = arr[0].x ; x1 * step <= arr[arr.GetSize()-1].x * step ; x1+= step )
+		for(x1 = arr[0].x ; x1 * step <= arr[arr.size()-1].x * step ; x1+= step )
 		{
 			arc.getY( x1 , &y1 , &y2 );
 			y1 -= thickness/2 ; y2 -= thickness/2 ; 
 			for(int kkk = 0; kkk< thickness ; kkk++)
 			{
-				if( (y1 >= max(0, minY)) && (y1 < min(YSize, maxY)))
+				if( (y1 >= MAX(0, minY)) && (y1 < MIN(rows, maxY)))
 				{
-					canvas(x1,y1,0)= color.val[0];
-					canvas(x1,y1,1)= color.val[1];
-					canvas(x1,y1,2)= color.val[2];
+					//canvas.at<cv::Scalar>(y1, x1) = color;
+					cv::circle(canvas, cv::Point(x1, y1), 1, color);
 				}
-				if( (y2 >= max(0, minY)) && (y2 < min(YSize, maxY)))
+				if( (y2 >= MAX(0, minY)) && (y2 < MIN(rows, maxY)))
 				{
-					canvas(x1,y2,0)= color.val[0];
-					canvas(x1,y2,1)= color.val[1];
-					canvas(x1,y2,2)= color.val[2];
+					//canvas.at<cv::Scalar>(y2, x1) = color;
+					cv::circle(canvas, cv::Point(x1, y2), 1, color);
 				}
 				y1 ++; y2++;
 			}
@@ -1079,56 +966,31 @@ void drawArc(ByteImage &canvas, const vecPoint2f &arr, SecondOrderLine arc, CvSc
 	}
 	else
 	{
-		int minX = min( min(arr[0].x, arr[1].x), min(arr[2].x, arr[3].x) ) - XSize/10;
-		int maxX = max( max(arr[0].x, arr[1].x), max(arr[2].x, arr[3].x) ) + XSize/10;
+		int minX = MIN( MIN(arr[0].x, arr[1].x), MIN(arr[2].x, arr[3].x) ) - cols/10;
+		int maxX = MAX( MAX(arr[0].x, arr[1].x), MAX(arr[2].x, arr[3].x) ) + cols/10;
 		if (temp.y > 0) step = 1;
 		else step = -1;
-		for(y1 = arr[0].y ; y1 * step <= arr[arr.GetSize()-1].y * step ; y1+= step )
+		for(y1 = arr[0].y ; y1 * step <= arr[arr.size()-1].y * step ; y1+= step )
 		{
 			arc.getX( y1 , &x1 , &x2 );
 			x1 -= thickness/2 ; x2 -= thickness/2 ; 
 			for(int kkk = 0; kkk< thickness ; kkk++)
 			{
-				if( (x1 >= max(0, minX)) && (x1 < min(XSize, maxX)))
+				if( (x1 >= MAX(0, minX)) && (x1 < MIN(cols, maxX)))
 				{
-					canvas(x1,y1,0)= color.val[0];
-					canvas(x1,y1,1)= color.val[1];
-					canvas(x1,y1,2)= color.val[2];
+					//canvas.at<cv::Scalar>(y1, x1) = color;
+					cv::circle(canvas, cv::Point(x1, y1), 1, color);
 				}
-				if( (x2 >= max(0, minX)) && (x2 < min(XSize, maxX)))
+				if( (x2 >= MAX(0, minX)) && (x2 < MIN(cols, maxX)))
 				{
-					canvas(x2,y1,0)= color.val[0];
-					canvas(x2,y1,1)= color.val[1];
-					canvas(x2,y1,2)= color.val[2];
+					//canvas.at<cv::Scalar>(y1, x2) = color;
+					cv::circle(canvas, cv::Point(x2, y1), 1, color);
 				}
 				x1 ++; x2++;
 			}
 		}
 	}
 }
-
-
-
-float distanceFromConic(cv::Point2f pt, SecondOrderLine arc)
-{
-	DoubleMatrix matX(3), matC(3,3);
-	matX(0) = pt.x;
-	matX(1) = pt.y;
-	matX(2) = 1;
-
-	matC(0,0) = arc.coef_xx;
-	matC(1,1) = arc.coef_yy;
-	matC(2,2) = arc.cons;
-
-	matC(0,2) = matC(2,0) = arc.coef_x / 2 ;
-	matC(1,2) = matC(2,1) = arc.coef_y / 2 ;
-	matC(0,1) = matC(1,0) = arc.coef_xy / 2 ;
-
-
-	return (float)( matX.Transpose() * matC * matX )(0,0) ;
-}
-
-
 
 float fpDistance(cv::Point2f p1, cv::Point2f p2)
 {
@@ -1137,9 +999,6 @@ float fpDistance(cv::Point2f p1, cv::Point2f p2)
 
 float lpDistance(const cv::Point3f& l, const cv::Point2f& p)
 {
-	line2(0,0) = -line(1,0);
-	line2(1,0) = line(0,0);
-
 	cv::Point3f l_;
 	l_.x = -l.y;
 	l_.y = l.x;
@@ -1151,95 +1010,6 @@ float lpDistance(const cv::Point3f& l, const cv::Point2f& p)
 	pd.y = p_.y / p_.z;
 
 	return cv::norm(p - pd);
-}
-
-void TakeRowsFrom(DoubleMatrix*mat,DoubleMatrix temp)
-{
-	int row = (temp).GetRowSize();
-	int col = (temp).GetColSize();
-	for(int i=0 ;i<row ; i++)
-		for(int j = 0  ; j<col ; j++)
-		{
-			(*mat)(i,j)=temp(i,j);
-		}
-}
-void TakeColsFrom(DoubleMatrix*mat,DoubleMatrix temp, int start)
-{
-	int row = (temp).GetRowSize();
-	int col = (temp).GetColSize();
-	for(int i=0 ;i<row ; i++)
-		for(int j = 0  ; j<col ; j++)
-		{
-			(*mat)(i,start+j)=temp(i,j);
-		}
-}
-
-
-DoubleMatrix nullVecter(DoubleMatrix mat)
-{
-	DoubleMatrix vecter, U, W, V;
-	
-	int row = mat.GetRowSize();
-	int col = mat.GetColSize();
-	vecter.Allocate(row);
-	if(row < col)
-	{
-		DoubleMatrix temp = mat;
-		(mat).Allocate(col,col);
-		TakeRowsFrom(&mat, temp);
-		row = col;
-	}
-	
-	SVD(mat , U , W , V);
-
-	int bestcolumn;
-	double minvalue = DBL_MAX ;
-
-	for (int k=0 ; k < col ; k++)
-	{
-		double value = W(k ,k);
-
-		if (value < minvalue)
-		{
-			bestcolumn =   k ;
-			minvalue = value ;
-		}
-	}
-	if (minvalue == 0)
-		vecter = V.GetColMatrix(bestcolumn ,1);
-	
-	return vecter;
-}
-
-cv::Point2f orthocenter(cv::Point2f* vertex)
-{
-	DoubleMatrix matA(3,2), matH(2), matb(3);
-	DoubleMatrix vecA(2), vecB(2), vecC(2);
-	
-	vecA(0) = vertex[0].x;
-	vecA(1) = vertex[0].y;
-	vecB(0) = vertex[1].x;
-	vecB(1) = vertex[1].y;
-	vecC(0) = vertex[2].x;
-	vecC(1) = vertex[2].y;
-
-
-	matA.SetRowMatrix((vecB - vecC).Transpose(),0);
-	matA.SetRowMatrix((vecA - vecC).Transpose(),1);
-	matA.SetRowMatrix((vecA - vecB).Transpose(),2);
-	
-	matb.SetRowMatrix( (vecB - vecC).Transpose() * vecA , 0);
-	matb.SetRowMatrix( (vecA - vecC).Transpose() * vecB , 1);
-	matb.SetRowMatrix( (vecA - vecB).Transpose() * vecC , 2);
-
-	matH = ( matA.Transpose() * matA ).Inverse() * matA.Transpose() * matb;
-	
-	cv::Point2f ocenter;
-	ocenter.x = matH(0);
-	ocenter.y = matH(1);
-
-	return ocenter;
-
 }
 
 bool isDiagonal(const cv::Point2f& pt1, const cv::Point2f& pt2, const cv::Point2f& otherPt1, const cv::Point2f& otherPt2)
@@ -1267,7 +1037,7 @@ bool isDiagonal(const cv::Point2f& pt1, const cv::Point2f& pt2, const cv::Point2
 }
 
 //Get Area
-float GetArea(const cv::Point2f& a, const cv::Point2f& b, const cv::Point2f& c, const cv::Point2f& d)
+float GetArea(cv::Point2f a, cv::Point2f b, cv::Point2f c, cv::Point2f d)
 {
 	cv::Point2f temp;
 	if (isDiagonal(a, b, c, d) == true)
@@ -1388,43 +1158,32 @@ void findVanishingPoint(SecondOrderLine*l,cv::Point2f*van)
 
 float calCenter(StraightLine *three, cv::Point2f& ptCenter)
 {
-	DoubleMatrix matA(3,2);
-	DoubleMatrix matx(2);
-	DoubleMatrix matb(3);
+	cv::Mat A = cv::Mat(3, 2, CV_64F, cv::Scalar(0));
+	cv::Mat b = cv::Mat(3, 1, CV_64F);
 
-	for (int i=0 ; i < 3 ; i++)
+	for (int i = 0; i < 3; i++)
 	{
-		matA(i, 0) =  three[i].coef_x;
-		matA(i, 1) =  three[i].coef_y;
-		matb(i, 0) = -three[i].cons;
+		A.at<double>(i, 0) = three[i].coef_x;
+		A.at<double>(i, 1) = three[i].coef_y;
+		b.at<double>(i, 0) = -three[i].cons;
 	}
 
+	cv::Mat x = (A.t()*A).inv()*A.t()*b;
+	//cv::Mat x =(A.Transpose()*A).Inverse()*A.Transpose()*b;
 
-	matx=(matA.Transpose()*matA).Inverse()*matA.Transpose()*matb;
+	ptCenter.x = x.at<double>(0, 0);
+	ptCenter.y = x.at<double>(1, 0);
 
-	//matA.SaveToText("matA.txt");
-	//matb.SaveToText("matb.txt");
-	//matx.SaveToText("matx.txt");
-
-	ptCenter.x = matx(0);
-	ptCenter.y = matx(1);
-
-	
 	float error = 0;
 
-	DoubleMatrix point(3);
-	point(0) = matx(0);
-	point(1) = matx(1);
-	point(2) = 1;
-
-	for(i = 0 ; i < 3 ; i++)
+	for (int i = 0; i < 3; i++)
 	{
-		DoubleMatrix line(3);
+		cv::Point3f l;
 		// line = (matA.GetRowMatrix(i,1)).Transpose();
-		line(0) = three[i].coef_x;
-		line(1) = three[i].coef_y;
-		line(2) = three[i].cons;
-		error += lpDistance(line,point);
+		l.x = three[i].coef_x;
+		l.y = three[i].coef_y;
+		l.z = three[i].cons;
+		error += lpDistance(l, ptCenter);
 	}
 
 	return error;
@@ -1439,7 +1198,7 @@ float findTan(StraightLine line1, StraightLine line2)
 	
 	return tan(angle2-angle1);
 
-}
+} 
 
 void findRAngle(float *angle_yz, float *angle_xz, StraightLine*msLine)
 {
@@ -1491,14 +1250,14 @@ void findVP(float angle1, float angle2, cv::Point2f* vp, cv::Point2f center, Str
 
 void drawLnVP(const cv::Point2f& center, StraightLine *msLine, cv::Point2f* vp, const cv::Mat& img, cv::Mat& canvas)
 {
-	int cols = image.cols;
-	int rows = image.rows;
+	int cols = img.cols;
+	int rows = img.rows;
 
 	int newCols = 3 * cols;
 	int newRows = 3 * rows;
 
-	int xend = 2 * xsize;
-	int yend = 2 * ysize;
+	int xend = 2 * cols;
+	int yend = 2 * rows;
 
 	canvas = cv::Mat(newRows, newCols, CV_8UC3, cv::Scalar(0));
 	img.copyTo(canvas(cv::Rect(cols, rows, cols, rows)));
@@ -1508,19 +1267,19 @@ void drawLnVP(const cv::Point2f& center, StraightLine *msLine, cv::Point2f* vp, 
 	temp2.y = yend;
 	temp1.x = msLine[0].getX(temp1.y);
 	temp2.x = msLine[0].getX(temp2.y);
-	cv::line(canvas, temp1 + cv::Point2f(xsize, ysize), temp2 + cv::Point2f(xsize, ysize), CV_RGB(255, 255, 255), 5);
+	cv::line(canvas, temp1 + cv::Point2f(cols, rows), temp2 + cv::Point2f(cols, rows), CV_RGB(255, 255, 255), 5);
 
 	temp1.x = center.x;
-	temp2.x = -xsize;
+	temp2.x = -cols;
 	temp1.y = msLine[1].getY(temp1.x);
 	temp2.y = msLine[1].getY(temp2.x);
-	cv::line(canvas, temp1 + cv::Point2f(xsize, ysize), temp2 + cv::Point2f(xsize, ysize), CV_RGB(255, 255, 255), 5);
+	cv::line(canvas, temp1 + cv::Point2f(cols, rows), temp2 + cv::Point2f(cols, rows), CV_RGB(255, 255, 255), 5);
 
 	temp1.x = center.x;
 	temp2.x = xend;
 	temp1.y = msLine[2].getY(temp1.x);
 	temp2.y = msLine[2].getY(temp2.x);
-	cv::line(canvas, temp1 + cv::Point2f(xsize, ysize), temp2 + cv::Point2f(xsize, ysize), CV_RGB(255, 255, 255), 5);
+	cv::line(canvas, temp1 + cv::Point2f(cols, rows), temp2 + cv::Point2f(cols, rows), CV_RGB(255, 255, 255), 5);
 
 	int a = vp[0].x;
 	a = vp[0].y;
@@ -1530,9 +1289,9 @@ void drawLnVP(const cv::Point2f& center, StraightLine *msLine, cv::Point2f* vp, 
 	a = vp[3].y;
 
 
-	cv::line(canvas, vp[0] + cv::Point2f(xsize, ysize), vp[1] + cv::Point2f(xsize, ysize), CV_RGB(255, 0, 0), 5);
-	cv::line(canvas, vp[1] + cv::Point2f(xsize, ysize), vp[2] + cv::Point2f(xsize, ysize), CV_RGB(255, 0, 0), 5);
-	cv::line(canvas, vp[0] + cv::Point2f(xsize, ysize), vp[2] + cv::Point2f(xsize, ysize), CV_RGB(255, 0, 0), 5);
+	cv::line(canvas, vp[0] + cv::Point2f(cols, rows), vp[1] + cv::Point2f(cols, rows), CV_RGB(255, 0, 0), 5);
+	cv::line(canvas, vp[1] + cv::Point2f(cols, rows), vp[2] + cv::Point2f(cols, rows), CV_RGB(255, 0, 0), 5);
+	cv::line(canvas, vp[0] + cv::Point2f(cols, rows), vp[2] + cv::Point2f(cols, rows), CV_RGB(255, 0, 0), 5);
 }
 /*
 int sort(CPoint* point, int num, int type)
@@ -1655,16 +1414,10 @@ int sort(double * val, int num)
 	return 0;
 }
 
-double distance(CPoint a, CPoint b)
-{
-	return sqrt( pow(a.x-b.x,2)+pow(a.y-b.y,2) );
-}
 double distance(double ax, double ay, double bx, double by)
 {
-	return sqrt( pow(ax-bx,2)+pow(ay-by,2) );
+	return sqrt(pow(ax - bx, 2) + pow(ay - by, 2));
 }
-
-
 
 double findNearestPoint(ThirdOrderLine line ,double ax, double ay, double bx, double by, cv::Point2f center, int type)
 {
@@ -1833,91 +1586,6 @@ double errorW(const vecPoint2f& arrDisPoint, const vecPoint2f& arrCorPoint, cons
 	return newerror;
 }
 
-double findTanofV(double*tan_bar, double left, double right, int num)
-{
-	if(left< 0)	left += PI;
-	if(right< 0)	right += PI;
-	if(abs(right - left) < 0.000000000001)
-	{
-		return tan((left+right)/2);
-	}
-	else
-	{
-		double first, second;
-		double firstError, secondError;
-
-
-		first = left + (right-left)*2/5;
-		second = right - (right-left)*2/5;
-		
-		firstError = errorTanofV(tan_bar, first, num);
-		secondError = errorTanofV(tan_bar, second, num);
-
-		if(firstError > secondError)
-		{
-			return findTanofV(tan_bar, first, right, num);
-		}
-		else
-		{
-			return findTanofV(tan_bar, left, second, num);
-		}
-	}
-}
-
-double errorTanofV(double*tan_bar, double theta_v, int num)
-{
-	double tan_v = tan(theta_v);
-	double be[LINENUM1];
-	//등차 수열의 각항 값 계산
-	for(int i = 0 ; i < num ; i++)
-	{
-		be[i] = (1 + tan_v*tan_bar[i]) / ( tan_bar[i] - tan_v );
-	}
-
-
-	//소팅
-//	sort(be,LINENUM);
-
-	//에러 보정
-	DoubleMatrix matA(num ,2);
-	DoubleMatrix matx(2 ,1);
-	DoubleMatrix matb(num ,1);
-
-	
-	//a와 d를 찾는다.
-	for(i=0 ; i<num ; i++)
-	{
-		matA(i,0) = 1;
-		matA(i,1) = i;
-		matb(i,0) = be[i];
-	}
-
-
-	matx = (matA.Transpose()*matA).Inverse()*matA.Transpose()*matb;
-//	DoubleMatrix errorM = (matA*matx - matb).Transpose() *(matA*matx - matb);
-//	TRACE_MAT(errorM);
-
-
-
-
-
-//	double error = ((matA*matx - matb).Transpose() *(matA*matx - matb))(0,0);
-
-
-	double error;
-	error = 0 ;
-	DoubleMatrix matS = matA * matx ;
-
-
-	for(i =0 ; i<num ; i++)
-	{
-//		error += pow((1/matS(i)) - (1/matb(i)),2);
-		error += pow(atan(1/matS(i)) - atan(1/matb(i)),2);
-	}
-
-
-	return error;
-}
 
 //////////////////////////////
 //	Class SetofPoints		//
@@ -1929,53 +1597,50 @@ SetofPoints::SetofPoints()
 
 SetofPoints::SetofPoints(const int lineNum, const int pointNum, const vecPoint2f& arrPoint)
 {
-	cv::Point2f tmpPoint;
-
-	int num = 0;
+	int i;
 	int count = 0;
 
-	for (int i = 0; i < pointNum*pointNum; i++)
+	int size = pointNum*pointNum;
+	int max_index = size;
+	for (i = 0; i < max_index; i++)
 	{
-		tmpPoint = arrPoint[i];
+		const cv::Point2f& pt = arrPoint[i];
 
-		int val1 = count / pointNum;
-		int val2 = count%pointNum;
+		int row = count / pointNum;
+		int col = count % pointNum;
 
-		if (tmpPoint.x == -1)
+		if (pt.x == -1)
 		{
-			a[0][val1][val2] = a[0][val1][val2 - 1];
-			a[1][val2][val1] = a[1][val2][val1 - 1];
+			a[0][row][col] = a[0][row][col - 1];
+			a[1][col][row] = a[1][col][row - 1];
 		}
 		else
 		{
-			a[0][val1][val2].x = tmpPoint.x;
-			a[0][val1][val2].y = tmpPoint.y;
-			a[1][val2][val1].x = tmpPoint.x;
-			a[1][val2][val1].y = tmpPoint.y;
+			a[0][row][col] = pt;
+			a[1][col][row] = pt;
 		}
 		count++;
 	}
 
 	count = 0;
 
-	for (; i < 2 * pointNum*pointNum; i++)
+	max_index += size;
+	for (; i < max_index; i++)
 	{
-		tmpPoint = arrPoint[i];
+		const cv::Point2f& pt = arrPoint[i];
 
-		int val1 = count / pointNum;
-		int val2 = count%pointNum;
+		int row = count / pointNum;
+		int col = count % pointNum;
 
-		if (tmpPoint.x == -1)
+		if (pt.x == -1)
 		{
-			a[0][val2 + LINENUM1][val1] = a[0][val2 + LINENUM1][val1 - 1];
-			a[2][val1][val2] = a[2][val1][val2 - 1];
+			a[0][col + LINENUM1][row] = a[0][col + LINENUM1][row - 1];
+			a[2][row][col] = a[2][row][col - 1];
 		}
 		else
 		{
-			a[0][val2 + LINENUM1][val1].x = tmpPoint.x;
-			a[0][val2 + LINENUM1][val1].y = tmpPoint.y;
-			a[2][val1][val2].x = tmpPoint.x;
-			a[2][val1][val2].y = tmpPoint.y;
+			a[0][col + LINENUM1][row] = pt;
+			a[2][row][col] = pt;
 		}
 
 		count++;
@@ -1983,42 +1648,42 @@ SetofPoints::SetofPoints(const int lineNum, const int pointNum, const vecPoint2f
 
 	count = 0;
 
-	for (; i < 3 * pointNum*pointNum; i++)
+	max_index += size;
+	for (; i < max_index; i++)
 	{
-		tmpPoint = arrPoint[i];
+		const cv::Point2f& pt = arrPoint[i];
 
-		int val1 = count / pointNum;
-		int val2 = count%pointNum;
+		int row = count / pointNum;
+		int col = count % pointNum;
 
-		if (tmpPoint.x == -1)
+		if (pt.x == -1)
 		{
-			a[1][val2 + LINENUM1][val1] = a[1][val2 + LINENUM1][val1 - 1];
-			a[2][val1 + LINENUM1][val2] = a[2][val1 + LINENUM1][val2 - 1];
+			a[1][col + LINENUM1][row] = a[1][col + LINENUM1][row - 1];
+			a[2][row + LINENUM1][col] = a[2][row + LINENUM1][col - 1];
 		}
 		else
 		{
-			a[1][val2 + LINENUM1][val1].x = tmpPoint.x;
-			a[1][val2 + LINENUM1][val1].y = tmpPoint.y;
-			a[2][val1 + LINENUM1][val2].x = tmpPoint.x;
-			a[2][val1 + LINENUM1][val2].y = tmpPoint.y;
+			a[1][col + LINENUM1][row] = pt;
+			a[2][row + LINENUM1][col] = pt;
 		}
 
 		count++;
 	}
 }
 
-void SetofPoints::setTypeLine(int type)
+void SetofPoints::setTypeLine(int type, const cv::Mat& img)
 {
+	cv::Mat canvas = img.clone();
+
 	int lineNumber[3];
 	lineNumber[0] = LINE0NUM;
 	lineNumber[1] = LINE1NUM;
 	lineNumber[2] = LINE2NUM;
 
-	cv::Mat matA = cv::Mat(lineNumber[type], 4, CV_64F, cv::Scalar(0));
-	cv::Mat matv = cv::Mat(4, 1, CV_64F);
-	cv::Mat matx = cv::Mat(6, 1, CV_64F);
-	cv::Mat matT = cv::Mat(3, 3, CV_64F, cv::Scalar(0));
-	cv::Mat point = cv::Mat(3, 1, CV_64F);
+	cv::Mat A = cv::Mat(lineNumber[type], 4, CV_64F, cv::Scalar(0));
+	cv::Mat v = cv::Mat(4, 1, CV_64F);
+	cv::Mat T = cv::Mat(3, 3, CV_64F, cv::Scalar(0));
+	cv::Mat p = cv::Mat(3, 1, CV_64F);
 
 	for (int i = 0; i < LINENUM1 * 2; i++)
 	{
@@ -2030,6 +1695,8 @@ void SetofPoints::setTypeLine(int type)
 		{
 			if (a[type][i][j].x != -1)
 			{
+				auto pt = a[type][i][j];
+				cv::circle(canvas, pt, 1, CV_RGB(255, 0, 0));
 				src_center += a[type][i][j];
 				count++;
 			}
@@ -2050,39 +1717,39 @@ void SetofPoints::setTypeLine(int type)
 
 		double s = sqrt(2) / src_dist;
 
-		matT.at<double>(0, 0) = s;
-		matT.at<double>(1, 1) = s;
-		matT.at<double>(2, 2) = 1;
-		matT.at<double>(0, 2) = -s * src_center.x;
-		matT.at<double>(1, 2) = -s * src_center.y;
+		T.at<double>(0, 0) = s;
+		T.at<double>(1, 1) = s;
+		T.at<double>(2, 2) = 1;
+		T.at<double>(0, 2) = -s * src_center.x;
+		T.at<double>(1, 2) = -s * src_center.y;
 
 		// a process of finding a line
-		for (j = 0; j < lineNumber[type]; j++)
+		for (int j = 0; j < lineNumber[type]; j++)
 		{
 			if (a[type][i][j].x != -1)
 			{
-				point.at<double>(0, 0) = a[type][i][j].x;
-				point.at<double>(1, 0) = a[type][i][j].y;
-				point.at<double>(2, 0) = 1;
-				point = matT * point;
+				p.at<double>(0, 0) = a[type][i][j].x;
+				p.at<double>(1, 0) = a[type][i][j].y;
+				p.at<double>(2, 0) = 1;
+				p = T * p;
 
-				matA.at<double>(j, 0) = pow(point.at<double>(0, 0), 2) + pow(point.at<double>(1, 0), 2);
-				matA.at<double>(j, 1) = point.at<double>(0, 0);
-				matA.at<double>(j, 2) = point.at<double>(1, 0);
-				matA.at<double>(j, 3) = 1;
+				A.at<double>(j, 0) = pow(p.at<double>(0, 0), 2) + pow(p.at<double>(1, 0), 2);
+				A.at<double>(j, 1) = p.at<double>(0, 0);
+				A.at<double>(j, 2) = p.at<double>(1, 0);
+				A.at<double>(j, 3) = 1;
 			}
 		}
 
-		cv::Mat e, U, V;
-		cv::SVDecomp(matA, e, U, V, cv::SVD::FULL_UV);
+		cv::Mat W, U, VT;
+		cv::SVDecomp(A, W, U, VT);
+		
 
 		int bestcolumn;
 		double minvalue = DBL_MAX;
 
 		for (int k = 0; k < 4; k++)
 		{
-			double value = W.at<double>(k, k);
-
+			double value = W.at<double>(k, 0);
 			if (value < minvalue)
 			{
 				bestcolumn = k;
@@ -2090,33 +1757,57 @@ void SetofPoints::setTypeLine(int type)
 			}
 		}
 
-		cv::Mat matC = cv::Mat(3, 3, CV_64F, cv::Scalar(0));
-		matC.at<double>(0, 0) = V.at<double>(0, bestcolumn);
-		matC.at<double>(1, 1) = V.at<double>(0, bestcolumn);
-		matC.at<double>(2, 2) = V.at<double>(3, bestcolumn);
-		matC.at<double>(0, 2) = V.at<double>(1, bestcolumn) / 2;
-		matC.at<double>(2, 0) = V.at<double>(1, bestcolumn) / 2;
-		matC.at<double>(1, 2) = V.at<double>(2, bestcolumn) / 2;
-		matC.at<double>(2, 1) = V.at<double>(2, bestcolumn) / 2;
+		cv::Mat C = cv::Mat(3, 3, CV_64F, cv::Scalar(0));
 
-		matC = (matT.t().dot(matC)).dot(matT);
+		C.at<double>(0, 0) = VT.at<double>(0, bestcolumn);
+		C.at<double>(1, 1) = VT.at<double>(0, bestcolumn);
+		C.at<double>(2, 2) = VT.at<double>(3, bestcolumn);
+		C.at<double>(0, 2) = VT.at<double>(1, bestcolumn) / 2;
+		C.at<double>(2, 0) = VT.at<double>(1, bestcolumn) / 2;
+		C.at<double>(1, 2) = VT.at<double>(2, bestcolumn) / 2;
+		C.at<double>(2, 1) = VT.at<double>(2, bestcolumn) / 2;
+
+		C = T.t()*C*T;
 		//matC = matT.Transpose() * matC * matT;
+		cv::Mat x = cv::Mat(6, 1, CV_64F, cv::Scalar(0));
+		x.at<double>(0, 0) = C.at<double>(0, 0);
+		x.at<double>(3, 0) = C.at<double>(0, 2) * 2;
+		x.at<double>(4, 0) = C.at<double>(1, 2) * 2;
+		x.at<double>(5, 0) = C.at<double>(2, 2);
 
-		matx.at<double>(0, 0) = matC.at<double>(0, 0);
-		matx.at<double>(3, 0) = matC.at<double>(0, 2) * 2;
-		matx.at<double>(4, 0) = matC.at<double>(1, 2) * 2;
-		matx.at<double>(5, 0) = matC.at<double>(2, 2);
 
-		//		matx = (matA.Transpose()*matA).Inverse()*matA.Transpose()*matb;
-		m_secondLines[type][i].set(matx);
+		m_secondLines[type][i].set(x);
+
+
+		// debugging
+		for (int y = 0; y < canvas.rows; y++)
+		{
+			int x1, x2;
+			m_secondLines[type][i].getX(y, &x1, &x2);
+			
+			if (x1 >= 0 && x1 < canvas.cols)
+			{
+				cv:circle(canvas, cv::Point(x1, y), 1, CV_RGB(255, 0, 0));
+			}
+
+			if (x2 >= 0 && x2 < canvas.cols)
+			{
+				circle(canvas, cv::Point(x2, y), 1, CV_RGB(255, 0, 0));
+			}
+
+		}
+		
+		int z = 0;
+
+
 	}
 }
 
 void SetofPoints::setTypeLine2(int type)
 {
-	cv::Mat matA = cv::Mat(POINTNUM, 4, CV_64F, cv::Scalar(0));
-	cv::Mat matx = cv::Mat(4, 1, CV_64F);
-	cv::Mat matb = cv::Mat(POINTNUM, 1, CV_64F);
+	cv::Mat A = cv::Mat(POINTNUM, 4, CV_64F, cv::Scalar(0));
+	cv::Mat x = cv::Mat(4, 1, CV_64F);
+	cv::Mat b = cv::Mat(POINTNUM, 1, CV_64F);
 
 	cv::Mat U, W, V;
 	bool bSingular;
@@ -2128,31 +1819,31 @@ void SetofPoints::setTypeLine2(int type)
 		{
 			if (type == 0)
 			{
-				matA.at<double>(j, 0) = 1;
-				matA.at<double>(j, 1) = a[type][i][j].y;
-				matA.at<double>(j, 2) = pow(a[type][i][j].y, 2);
-				matA.at<double>(j, 3) = pow(a[type][i][j].y, 3);
-				matb.at<double>(j, 0) = a[type][i][j].x;
+				A.at<double>(j, 0) = 1;
+				A.at<double>(j, 1) = a[type][i][j].y;
+				A.at<double>(j, 2) = pow(a[type][i][j].y, 2);
+				A.at<double>(j, 3) = pow(a[type][i][j].y, 3);
+				b.at<double>(j, 0) = a[type][i][j].x;
 				if (a[type][i][0].y != a[type][i][j].y)
 					bSingular = false;
 			}
 			else if (type == 1)
 			{
-				matA.at<double>(j, 0) = 1;
-				matA.at<double>(j, 1) = a[type][i][j].x;
-				matA.at<double>(j, 2) = pow(a[type][i][j].x, 2);
-				matA.at<double>(j, 3) = pow(a[type][i][j].x, 3);
-				matb.at<double>(j, 0) = a[type][i][j].y;
+				A.at<double>(j, 0) = 1;
+				A.at<double>(j, 1) = a[type][i][j].x;
+				A.at<double>(j, 2) = pow(a[type][i][j].x, 2);
+				A.at<double>(j, 3) = pow(a[type][i][j].x, 3);
+				b.at<double>(j, 0) = a[type][i][j].y;
 				if (a[type][i][0].x != a[type][i][j].x)
 					bSingular = false;
 			}
 			else
 			{
-				matA.at<double>(j, 0) = 1;
-				matA.at<double>(j, 1) = a[0][LINENUM1 + i][j].y;
-				matA.at<double>(j, 2) = pow(a[0][LINENUM1 + i][j].y, 2);
-				matA.at<double>(j, 3) = pow(a[0][LINENUM1 + i][j].y, 3);
-				matb.at<double>(j, 0) = a[0][LINENUM1 + i][j].x;
+				A.at<double>(j, 0) = 1;
+				A.at<double>(j, 1) = a[0][LINENUM1 + i][j].y;
+				A.at<double>(j, 2) = pow(a[0][LINENUM1 + i][j].y, 2);
+				A.at<double>(j, 3) = pow(a[0][LINENUM1 + i][j].y, 3);
+				b.at<double>(j, 0) = a[0][LINENUM1 + i][j].x;
 				if (a[0][LINENUM1 + i][0].y != a[0][LINENUM1 + i][j].y)
 					bSingular = false;
 			}
@@ -2160,11 +1851,11 @@ void SetofPoints::setTypeLine2(int type)
 
 		if (bSingular == false)
 		{
-			matx = (matA.t().dot(matA)).inv().dot(matA.t()).dot(matb);
+			x = (A.t()*A).inv()*A.t()*b;
 			//matx = (matA.Transpose()*matA).Inverse()*matA.Transpose()*matb;
 		}
 
-		s[type][i].set(matx);
+		s[type][i].set(x);
 	}
 }
 
@@ -2374,25 +2065,21 @@ void SetofPoints::findAngle(const cv::Point2f& center, int originalType, cv::Poi
 				sort(be, *indexNum);
 
 				//에러 보정
-				DoubleMatrix matA(*indexNum, 2);
-				DoubleMatrix matx(2, 1);
-				DoubleMatrix matb(*indexNum, 1);
-
+				cv::Mat A = cv::Mat(*indexNum, 2, CV_64F, cv::Scalar(0));
+				cv::Mat b = cv::Mat(*indexNum, 1, CV_64F);
 
 				//a와 d를 찾는다.
 				for (i = 0; i < *indexNum; i++)
 				{
-					matA(i, 0) = 1;
-					matA(i, 1) = i;
-					matb(i, 0) = be[i];
+					A.at<double>(i, 0) = 1;
+					A.at<double>(i, 1) = i;
+					b.at<double>(i, 0) = be[i];
 				}
-
-
-				matx = (matA.Transpose()*matA).Inverse()*matA.Transpose()*matb;
-				double aaa = matx(0, 0);
-				double ddd = matx(1, 0);
-
-
+				
+				cv::Mat x = (A.t()*A).inv()*A.t()*b;
+				//matx = (matA.Transpose()*matA).Inverse()*matA.Transpose()*matb;
+				double aaa = x.at<double>(0, 0);
+				double ddd = x.at<double>(1, 0);
 
 				d[0] = ddd / LINE_INTERVAL;		//작은 한칸의 d
 				a[0] = aaa - linestart*d[0];		//축의 a
@@ -2445,24 +2132,22 @@ void SetofPoints::findAngle(const cv::Point2f& center, int originalType, cv::Poi
 				sort(be, *indexNum);
 
 				//에러 보정
-				DoubleMatrix matA(*indexNum, 2);
-				DoubleMatrix matx(2, 1);
-				DoubleMatrix matb(*indexNum, 1);
+				//에러 보정
+				cv::Mat A = cv::Mat(*indexNum, 2, CV_64F, cv::Scalar(0));
+				cv::Mat b = cv::Mat(*indexNum, 1, CV_64F);
 
 				//a와 d를 찾는다.
 				for (i = 0; i < *indexNum; i++)
 				{
-					matA(i, 0) = 1;
-					matA(i, 1) = i;
-					matb(i, 0) = be[i];
+					A.at<double>(i, 0) = 1;
+					A.at<double>(i, 1) = i;
+					b.at<double>(i, 0) = be[i];
 				}
 
-				matx = (matA.Transpose()*matA).Inverse()*matA.Transpose()*matb;
-				double aaa = matx(0, 0);
-				double ddd = matx(1, 0);
-
-
-
+				cv::Mat x = (A.t()*A).inv()*A.t()*b;
+				//matx = (matA.Transpose()*matA).Inverse()*matA.Transpose()*matb;
+				double aaa = x.at<double>(0, 0);
+				double ddd = x.at<double>(1, 0);
 				d[1] = ddd / LINE_INTERVAL;		//작은 한칸의 d
 				a[1] = aaa - linestart*d[1];		//축의 a
 			//	a[1] = aaa-11*d[1];		//축의 a
@@ -2511,27 +2196,22 @@ void SetofPoints::findAngle(const cv::Point2f& center, int originalType, cv::Poi
 				sort(be, *indexNum);
 
 				//에러 보정
-				DoubleMatrix matA(*indexNum, 2);
-				DoubleMatrix matx(2, 1);
-				DoubleMatrix matb(*indexNum, 1);
-
+				//에러 보정
+				cv::Mat A = cv::Mat(*indexNum, 2, CV_64F, cv::Scalar(0));
+				cv::Mat b = cv::Mat(*indexNum, 1, CV_64F);
 
 				//a와 d를 찾는다.
 				for (i = 0; i < *indexNum; i++)
 				{
-					matA(i, 0) = 1;
-					matA(i, 1) = i;
-					matb(i, 0) = be[i];
+					A.at<double>(i, 0) = 1;
+					A.at<double>(i, 1) = i;
+					b.at<double>(i, 0) = be[i];
 				}
 
-
-				TRACE_MAT(matA);
-
-				matx = (matA.Transpose()*matA).Inverse()*matA.Transpose()*matb;
-				double aaa = matx(0, 0);
-				double ddd = matx(1, 0);
-
-
+				cv::Mat x = (A.t()*A).inv()*A.t()*b;
+				//matx = (matA.Transpose()*matA).Inverse()*matA.Transpose()*matb;
+				double aaa = x.at<double>(0, 0);
+				double ddd = x.at<double>(1, 0);
 
 				d[2] = ddd / LINE_INTERVAL;		//작은 한칸의 d
 				a[2] = aaa - linestart*d[2];		//축의 a
@@ -2723,63 +2403,11 @@ void loadPointsFromFile(std::ifstream ptFile, vecPoint2f *arrPoint)
 	{
 		cv::Point2f temp;
 		ptFile >> temp.x >> temp.y;
-		(*arrPoint).Add(temp);
+		(*arrPoint).push_back(temp);
 	}
 }
 
-
-void findHoleWith3pt(cv::Point2f pt1, cv::Point2f pt2, cv::Point2f pt3, cv::Point2f* center, float* radius)
-{
-	DoubleMatrix x1(3), x2(3), x3(3), xCenter(3);
-	x1(0) = pt1.x;
-	x1(1) = pt1.y;
-	x1(2) = 1;
-
-	x2(0) = pt2.x;
-	x2(1) = pt2.y;
-	x2(2) = 1;
-
-	x3(0) = pt3.x;
-	x3(1) = pt3.y;
-	x3(2) = 1;
-
-	DoubleMatrix l1(3), l2(3);
-
-	l1 = Cross(x1,x2);
-	l2 = Cross(x2,x3);
-
-	DoubleMatrix newl1(3), newl2(3);
-
-	newl1(0) = -l1(1);
-	newl1(1) = l1(0);
-	newl1(2) = - ( newl1(0)*(x1(0)+x2(0))/2.0f + newl1(1)*(x1(1)+x2(1))/2.0f );
-	newl2(0) = -l2(1);
-	newl2(1) = l2(0);
-	newl2(2) = - ( newl2(0)*(x2(0)+x3(0))/2.0f + newl2(1)*(x2(1)+x3(1))/2.0f );
-
-
-	xCenter = Cross(newl1,newl2);
-	
-	(*center).x = xCenter(0)/ xCenter(2);
-	(*center).y = xCenter(1)/ xCenter(2);
-
-	*radius = fpDistance(*center, pt1);
-}
-
-void findHoleWith4pt(cv::Point2f pt1, cv::Point2f pt2, cv::Point2f pt3, cv::Point2f pt4, cv::Point2f* center, float* radius)
-{
-	findHoleWith3pt(pt1, pt2, pt3, center, radius);
-	if( fpDistance(*center, pt4) > *radius)
-		return;
-	findHoleWith3pt(pt1, pt2, pt4, center, radius);
-	if( fpDistance(*center, pt3) > *radius)
-		return;
-	findHoleWith3pt(pt1, pt3, pt4, center, radius);
-	if( fpDistance(*center, pt2) > *radius)
-		return;
-	findHoleWith3pt(pt2, pt3, pt4, center, radius);
-}
-
+/*
 DoubleMatrix findHomography(vecPoint2f first, vecPoint2f second)
 {
 	int ptNum;
@@ -2823,7 +2451,7 @@ DoubleMatrix findHomography(vecPoint2f first, vecPoint2f second)
 
 	return matH;
 }
-
+*/
 cv::Point2f ptCorrection(cv::Point2f cod, float w, cv::Point2f inputpt)
 {
 	float disR = fpDistance(cod, inputpt);
@@ -2853,7 +2481,7 @@ float lineErrorCheck(const int XSize, const int YSize, const cv::Point2f center,
 
 		if(xd == -1)
 		{
-			arrCorPoint.Add(cv::Point2f(-1,-1));
+			arrCorPoint.push_back(cv::Point2f(-1,-1));
 		}
 		else
 		{
@@ -2864,7 +2492,7 @@ float lineErrorCheck(const int XSize, const int YSize, const cv::Point2f center,
 			xc= center.x +((float)xd-center.x)*ratio ;
 			yc= center.y +((float)yd-center.y)*ratio ;
 
-			arrCorPoint.Add(cv::Point2f(xc,yc));
+			arrCorPoint.push_back(cv::Point2f(xc,yc));
 		}
 	}
 
@@ -2877,7 +2505,7 @@ bool findMinErrorW(int XSize, int YSize, cv::Point2f center, const vecPoint2f& a
 
 	if (w[2] - w[0] < 0.000001)
 	{
-		return TRUE;
+		return true;
 	}
 
 	float lineError[3];
@@ -2889,7 +2517,7 @@ bool findMinErrorW(int XSize, int YSize, cv::Point2f center, const vecPoint2f& a
 
 	if (lineError[0] < lineError[1] && lineError[0] < lineError[2])
 	{
-		if (bLocalMin == FALSE)
+		if (bLocalMin == false)
 		{
 			w[2] = w[1] ; 
 			w[1] = w[0] ; 
@@ -2901,20 +2529,20 @@ bool findMinErrorW(int XSize, int YSize, cv::Point2f center, const vecPoint2f& a
 			w[1] = w[0] ; 
 			w[0] = w[1] - (w[2] - w[1]);
 		}
-		return FALSE;
+		return false;
 	}
 	else if (lineError[1] < lineError[0] && lineError[1] < lineError[2])
 	{
-		bLocalMin = TRUE;
+		bLocalMin = true;
 
 		w[0] = (w[0]+w[1])/2; 
 		w[2] = (w[1]+w[2])/2;
 
-		return FALSE;
+		return false;
 	}
 	else if (lineError[2] < lineError[0] && lineError[2] < lineError[1])
 	{
-		if (bLocalMin == FALSE)
+		if (bLocalMin == false)
 		{
 			w[0] = w[1] ; 
 			w[1] = w[2] ; 
@@ -2927,19 +2555,18 @@ bool findMinErrorW(int XSize, int YSize, cv::Point2f center, const vecPoint2f& a
 			w[2] = w[1] + (w[1] - w[0]);
 		}
 
-		return FALSE;
+		return false;
 	}
 	else
 	{
-		return TRUE;
+		return true;
 	}
 }
 
-
-float postProcessing(ByteImage &img, vecPoint2f& arrDisPoint, cv::Point2f center, float wInit )
+float postProcessing(const cv::Mat &img, vecPoint2f& arrDisPoint, cv::Point2f center, float wInit)
 {
-	int XSize = img.GetXSize();
-	int YSize = img.GetYSize();
+	int cols = img.cols;
+	int rows = img.rows;
 
 	float w[3];
 
@@ -2948,14 +2575,14 @@ float postProcessing(ByteImage &img, vecPoint2f& arrDisPoint, cv::Point2f center
 	w[2] = wInit + 0.002;
 
 
-	bool bLocalMin = FALSE;
+	bool bLocalMin = false;
 	int cnt=0;
 
 	while (1)
 	{
 		if (w[0] < 0) { w[0] = 0; }
 	
-		bool bSucess = findMinErrorW(XSize, YSize, center, arrDisPoint, w, bLocalMin);
+		bool bSucess = findMinErrorW(cols, rows, center, arrDisPoint, w, bLocalMin);
 
 		if(bSucess)
 		{

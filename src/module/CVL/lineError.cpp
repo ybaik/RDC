@@ -58,17 +58,14 @@ double LineError::measureError(int xSize, int ySize, bool outerior)
 	{
 		if (outerior == true && points[i].x != -1)
 		{
-			p = cv::Point3f(points[i].x, points[i].y, 1);
-
-			error += lpDistance(l, p);
+			error += lpDistance(l, points[i]);
 			count++;
 		}
 		else if (outerior == false && points[i].x != -1 &&
 			points[i].x >= -(float)xSize * 0.5f && points[i].x < (float)xSize * 1.5f &&
 			points[i].y >= -(float)ySize * 0.5f && points[i].y < (float)ySize * 1.5f)
 		{
-			p = cv::Point3f(points[i].x, points[i].y, 1);
-			error += lpDistance(l, p);
+			error += lpDistance(l, points[i]);
 			count++;
 		}
 

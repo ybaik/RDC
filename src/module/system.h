@@ -24,6 +24,8 @@ public:
 		bool bUseGaussian,
 		bool bUseSharpen);
 
+	void load_labeled_points(char* fn, vecPoint2f& labeledPoints, cv::Mat& canvas);
+
 protected:
 	int _nLattice;
 };

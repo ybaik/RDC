@@ -694,6 +694,7 @@ bool AutoLabeling::autoLabeling(
 
 	
 #ifdef _DEBUG
+	/*
 	// draw some features to make debug view
 	CvScalar color = CV_RGB(255, 0, 255);
 
@@ -755,6 +756,7 @@ bool AutoLabeling::autoLabeling(
 	}
 
 	cv::imshow("labeling", canvas);
+	//*/
 #endif _DEBUG
 
 	// Aligned save for RDC and camera calibration
@@ -770,5 +772,38 @@ bool AutoLabeling::autoLabeling(
 	// plane 3
 	transposeAndInput(arrLabeledPoint, corners_out, nSize2, nSize, nGrid);
 
+	/*
+	CvScalar color = CV_RGB(255, 0, 255);
+
+	for (size_t i = 0; i < arrLabeledPoint.size() - 1; i++)
+	{
+		const cv::Point2f& pt_prev = corners_out[i];
+		const cv::Point2f& pt_next = corners_out[i + 1];
+
+		if ((i + 1) % nGrid == 0) continue;
+
+		if (pt_prev.x == -1 || pt_next.x == -1) continue;
+
+		cv::line(canvas, pt_prev, pt_next, CV_RGB(255, 255, 255), 1);
+	}
+
+	for (size_t i = 0; i < arrLabeledPoint.size(); i++)
+	{
+		const cv::Point2f& pt = corners_out[i];
+		cv::drawMarker(canvas, pt, CV_RGB(255, 0, 0), cv::MARKER_CROSS, 5, 1);
+
+
+		if (i >= nSize && i < nSize2)
+		{
+			color = CV_RGB(0, 0, 255);
+		}
+		else if (i > nSize2)
+		{
+			color = CV_RGB(255, 255, 0);
+		}
+
+		cv::drawMarker(canvas, pt, color, cv::MARKER_SQUARE, 5, 1);
+	}
+	//*/
  	return true;
 }

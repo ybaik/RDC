@@ -1,4 +1,5 @@
 #include "system.h"
+#include <fstream>
 
 System::System(int nLattice)
 {
@@ -26,23 +27,26 @@ void System::correct(const cv::Mat& img)
 		cv::cvtColor(gimg, cimg, CV_GRAY2RGB);
 	}
 
-
 	// extract corners
 	std::vector<cv::Point2f> corners;
-	extractCorners(gimg, cimg, corners, true, true);
-
+	//extractCorners(gimg, cimg, corners, true, true);
 
 	// auto labeling
 	int nGrid = 24;
 	AutoLabeling Labeling(_nLattice);
 	std::vector<cv::Point2f> corners_labeled;
-	Labeling.autoLabeling(gimg, cimg, corners, corners_labeled, nGrid);
+	//Labeling.autoLabeling(gimg, cimg, corners, corners_labeled, nGrid);
+
+
+	vecPoint2f labeledPoints;
+	cv::Mat canvas = cimg.clone();
+	load_labeled_points("l.txt", labeledPoints, canvas);
 
 	// correction
 	cv::Point2f cod;
 	double w;
 	std::vector<cv::Point2f> corners_corrected;
-	correction(cimg, nGrid, corners_labeled, corners_corrected, cod, w, true);
+	correction(cimg, nGrid, labeledPoints, corners_corrected, cod, w, true);
 }
 
 void System::extractCorners(
@@ -119,3 +123,46 @@ void System::extractCorners(
 #endif
 }
 
+void System::load_labeled_points(char* fn, vecPoint2f& labeledPoints, cv::Mat& canvas)
+{
+	std::ifstream infile;
+	infile.open(fn);
+
+	vecPoint2f arrFilePoint;
+	float x, y;
+
+	int nGrid;
+	infile >> nGrid;
+
+	while (!infile.eof())
+	{
+		infile >> x >> y;
+		arrFilePoint.push_back(cv::Point2f((float)(x), (float)(y)));
+	}
+
+	//arrFilePoint.RemoveAt(arrFilePoint.GetSize() - 1);
+
+	infile.close();
+
+	// view
+	for (int i = 0; i < arrFilePoint.size(); i++)
+	{
+		CvPoint pt;
+		pt.x = int(arrFilePoint[i].x + 0.5);
+		pt.y = int(arrFilePoint[i].y + 0.5);
+
+		if (pt.x < 0.0f || pt.y < 0.0f) continue;
+
+		int r, g, b;
+		r = (i / POINTNUM_SQ == 0) ? 255 : 0;
+		g = (i / POINTNUM_SQ == 1) ? 255 : 0;
+		b = (i / POINTNUM_SQ == 2) ? 255 : 0;
+
+		cv::circle(canvas, pt, 2, CV_RGB(r, g, b), 2);
+	}
+
+	cv::imshow("image", canvas);
+
+	labeledPoints.clear();
+	labeledPoints = arrFilePoint;
+}

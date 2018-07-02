@@ -1,4 +1,4 @@
-#define SHOW_PROC	false
+#define SHOW_PROC	true
 
 #define DEF_XSIZE	720
 
