@@ -6,6 +6,8 @@
 #include <opencv2/highgui.hpp>
 #include "CVL/rdclass.h"
 
+#include <opencv2/calib3d.hpp>
+
 class System  
 {
 public:

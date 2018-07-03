@@ -11,7 +11,7 @@
 void main()
 {
 	// load image
-	cv::Mat img = cv::imread("l.jpg", 1);
+	cv::Mat img = cv::imread("l1.jpg", 1);
 	int nLattice = 7;
 	System sys(nLattice);
 	sys.correct(img);

@@ -40,13 +40,87 @@ void System::correct(const cv::Mat& img)
 
 	vecPoint2f labeledPoints;
 	cv::Mat canvas = cimg.clone();
-	load_labeled_points("l.txt", labeledPoints, canvas);
+	load_labeled_points("l1.txt", labeledPoints, canvas);
+
+
+	std::vector<cv::Point2f> pts2d0;
+	std::vector<cv::Point2f> pts2d1;
+	std::vector<cv::Point2f> pts2d2;
+	std::vector<cv::Point3f> pts3d0;
+	std::vector<cv::Point3f> pts3d1;
+	std::vector<cv::Point3f> pts3d2;
+
+	int nGrid_sq = nGrid*nGrid;
+
+	std::vector<std::vector<cv::Point2f>> imagePoints;
+	std::vector<std::vector<cv::Point3f> > objectPoints;
+
+
+	for (int i = 0; i < (int)labeledPoints.size(); i++)
+	{
+		const cv::Point2f& pt = labeledPoints[i];
+		
+		if (pt.x < 0 || pt.y < 0) {
+			continue;
+		}
+
+		int plane = i / nGrid_sq;
+		int index = i % nGrid_sq;
+
+		if (plane == 0)
+		{
+			float x = index / nGrid;
+			float y = index % nGrid;
+			//pts3d0.push_back(cv::Point3f(x * 20, y * 20, 0));
+			pts3d0.push_back(cv::Point3f(y * 20, x * 20, 0));
+			pts2d0.push_back(pt);
+		}
+		if (plane == 1)
+		{
+			float y = index / nGrid;
+			float z = index % nGrid;
+
+			//if (y == 0) continue;
+
+			pts3d1.push_back(cv::Point3f(z * 20, y * 20, 0));
+			//pts3d1.push_back(cv::Point3f(0, y * 20, z * 20));
+			pts2d1.push_back(pt);
+		}
+		if (plane == 2)
+		{
+			float z = index / nGrid;
+			float x = index % nGrid;
+
+			//if (z == 0) continue;
+			//if (x == 0) continue;
+
+			pts3d2.push_back(cv::Point3f(x * 20, z * 20, 0));
+			//pts3d.push_back(cv::Point3f(x * 20, 0, z * 20));
+			pts2d2.push_back(pt);
+		}
+	}
+
+	cv::Mat cameraMatrix;
+	cv::Mat distCoeffs;
+	std::vector<cv::Mat> rvecs, tvecs;
+
+	imagePoints.push_back(pts2d0);
+	imagePoints.push_back(pts2d1);
+	imagePoints.push_back(pts2d2);
+	objectPoints.push_back(pts3d0);
+	objectPoints.push_back(pts3d1);
+	objectPoints.push_back(pts3d2);
+	cv::calibrateCamera(objectPoints, imagePoints, cimg.size(), cameraMatrix, distCoeffs, rvecs, tvecs);
+	cv::Mat temp = cimg.clone();
+	undistort(temp, cimg, cameraMatrix, distCoeffs);
+
+	int a = 0;
 
 	// correction
-	cv::Point2f cod;
-	double w;
-	std::vector<cv::Point2f> corners_corrected;
-	correction(cimg, nGrid, labeledPoints, corners_corrected, cod, w, true);
+	//cv::Point2f cod;
+	//double w;
+	//std::vector<cv::Point2f> corners_corrected;
+	//correction(cimg, nGrid, labeledPoints, corners_corrected, cod, w, true);
 }
 
 void System::extractCorners(
