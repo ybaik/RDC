@@ -96,10 +96,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../src;../../externals/opencv3.4.1windows/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../src;../../externals/opencv3.4.2windows/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>../../externals/opencv3.4.1windows/x64/vc14/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../externals/opencv3.4.2windows/x64/vc14/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

@@ -3,9 +3,9 @@
 #include "module/system.h"
 
 #ifdef _DEBUG
-#pragma comment(lib, "opencv_world341d.lib")
+#pragma comment(lib, "opencv_world342d.lib")
 #else
-#pragma comment(lib, "opencv_world341.lib")
+#pragma comment(lib, "opencv_world342.lib")
 #endif
 
 void main()
